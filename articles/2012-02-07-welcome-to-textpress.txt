@@ -1,0 +1,8 @@
+{
+ "title":"Welcome to TextPress",
+ "date" : "07-02-2012",
+ "author" : "Admin",
+ "tag" : "intro"
+}
+
+TextPress is a simple, light wieght blog engine

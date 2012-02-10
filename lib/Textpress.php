@@ -323,8 +323,10 @@ class Textpress
 		$data = array(
 				'date.format' => $this->slim->config('date.format'),
 				'author.name' => $this->slim->config('author.name'),
+				'site.name' => $this->slim->config('site.name'),
 				'site.title' => $this->slim->config('site.title'),
-				'disqus.username' => $this->slim->config('disqus.username')
+				'disqus.username' => $this->slim->config('disqus.username'),
+				'base.directory' => $this->slim->config('base.directory')
 			);
 		$this->slim->view()->appendGlobalData($data);
 	}

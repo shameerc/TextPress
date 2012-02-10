@@ -64,6 +64,9 @@ body > header > h1 {
 }
 .post p {
   margin: 10px 0;
+  font-family: 'Baskerville', Georgia, Times, serif;
+  font-size: 20px;
+  line-height: 30px;
 }
 .post .more {
   margin-top: -10px;
@@ -88,7 +91,8 @@ h1, h2, h3, h4 {
 }
 ul, li {
   list-style-type: disc;
-  font-size : 13px;
+  font-size: 20px;
+  line-height: 30px;
 }
 ul ul li, ol ul{
   list-style-type: circle;

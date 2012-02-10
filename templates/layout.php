@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>
       <?php 
-        echo $global['site.title'];
+        echo $global['site.name'] .' | '. $global['site.title'];
       ?>
     </title>
     <meta name="description" content="">
@@ -16,8 +16,8 @@
     <![endif]-->
 
     <!-- Le styles -->
-    <link href="/assets/css/bootstrap.css" rel="stylesheet">
-    <link href="/assets/css/main.css" rel="stylesheet">
+    <link href="<?php echo $global['base.directory'];?>/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="<?php echo $global['base.directory'];?>/assets/css/main.css" rel="stylesheet">
     <style type="text/css">
       /* Override some defaults */
       html, body {
@@ -80,7 +80,7 @@
     <div class="topbar">
       <div class="fill">
         <div class="container">
-          <h1><a class="brand" href="/">TextPress</a></h1>
+          <h1><a class="brand" href="/"><?Php echo $global['site.name'];?></a></h1>
           <ul class="nav">
             <li><a href="/">Home</a></li>
             <li><a href="/archives">Archives</a></li>
@@ -101,7 +101,7 @@
       </div>
 
       <footer>
-        <p>&copy; Company 2012</p>
+        <p>Powered by TextPress &copy; <a href="http://shameerc.com" target="_blank">Shameer C </a>2012</p>
       </footer>
     </div> <!-- /container -->
   </body>

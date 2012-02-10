@@ -5,4 +5,80 @@
  "tag" : "intro"
 }
 
-TextPress is a simple, light wieght blog engine
+TextPress is a simple, light wieght blogging engine for PHP nerds, which can be hosted in PHP clouds like PHPFOg, Pagodabox, Orchestra.io, etc. It is inspired from [toto](http://cloudhead.io/toto), a flat-file blog engine in Ruby. TextPress uses Git, the most popular version control system, for publishing articles. It is built on top of [Slim framework](http://www.slimframework.com/).
+You can use either Markdown syntax or pure html for writing posts.
+
+#Features
+
+* Simple, easy to use 
+* Publish article using git
+* Secure
+* Blazing fast
+* Write articles in text file, with metadata in json format.
+* Easy integration with disqus commenting system.
+* Designed to work on cloud
+
+#Requirements
+
+* You should have Git installed
+* You should not hate using commands
+* Knowledge or willingness to learn HTML/Markdown
+* Account in any PHP PaaS like PHPFog, Pagodabox, etc.
+
+#Get started
+
+Clone TextPress from Github 
+~~~
+shameer@ubuntu:~$ git clone git@github.com:shameerc/TextPress.git
+~~~
+
+#Filesystem
+
+<img src="/assets/images/filesystem.jpg" />
+#Configuration
+
+Config file located in config directory returns an array of site configuration. Configuration consists of site settings and routes. Site settings includes
+~~~
+'date.format' => 'd M, Y',   // Date format to be used in article page (not for routes)   
+'author.name' => 'Author name', // Global author name 
+'site.name'  => 'TextPress',   // Site name (Global)
+'site.title' => 'PHP Flat-file blog engine',  // Site default title (Global)
+'article.path'=> './articles',      // Path to articles
+'templates.path' => './templates',  // Path to templates
+'layout.file' => 'layout',    // Site layout file
+'file.extension' => '.txt',   // file extension of articles
+'disqus.username' => false,   // Your disqus username or false (Global)
+~~~
+
+##Routes
+TextPress defines all routes as an array. Each route should have a url pattern and template files. You can write route conditions optionally. For a particular route, layout can be setting **layout => false**. TextPress comes with the following default routes. 
+~~~
+// Site Route
+'__root__'=> array(
+		'route' => '/',
+		'template'=>'index',
+	),
+'article' => array(
+		'route' => '/:year/:month/:date/:article(/)',
+		'template'=>'article',
+		'conditions' => array(
+							 'year' => '(19|20)\d\d'
+							,'month'=>'([1-9]|[01][0-9])'
+							,'date'=>'([1-9]|[0-3][0-9])'
+							)
+	),
+'archives' => array(
+		'route' => '/archives(/:year(/:month(/:date)))',
+		'template' => 'archives',
+		'conditions' => array(
+							'year' => '(19|20)\d\d',
+							'month'=>'([1-9]|[01][0-2])'
+							)
+	),
+'about' => array(
+		'route' => '/about',
+		'template' => 'about',
+		'layout' => false
+	)
+~~~
+Right now the routes to article and archives are fixed. I will be adding custom  route feature in coming version.

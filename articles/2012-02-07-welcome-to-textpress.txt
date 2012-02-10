@@ -8,7 +8,7 @@
 TextPress is a simple, light wieght blogging engine for PHP nerds, which can be hosted in PHP clouds like PHPFOg, Pagodabox, Orchestra.io, etc. It is inspired from [toto](http://cloudhead.io/toto), a flat-file blog engine in Ruby. TextPress uses Git, the most popular version control system, for publishing articles. It is built on top of [Slim framework](http://www.slimframework.com/).
 You can use either Markdown syntax or pure html for writing posts.
 
-#Features
+##Features
 
 * Simple, easy to use 
 * Publish article using git
@@ -18,21 +18,21 @@ You can use either Markdown syntax or pure html for writing posts.
 * Easy integration with disqus commenting system.
 * Designed to work on cloud
 
-#Requirements
+##Requirements
 
 * You should have Git installed
 * You should not hate using commands
 * Knowledge or willingness to learn HTML/Markdown
 * Account in any PHP PaaS like PHPFog, Pagodabox, etc.
 
-#Get started
+##Get started
 
 Clone TextPress from Github 
 ~~~
 shameer@ubuntu:~$ git clone git@github.com:shameerc/TextPress.git
 ~~~
 
-#Filesystem
+##Filesystem
 
 <img src="/assets/images/filesystem.jpg" />
 #Configuration
@@ -50,7 +50,7 @@ Config file located in config directory returns an array of site configuration. 
 'disqus.username' => false,   // Your disqus username or false (Global)
 ~~~
 
-##Routes
+###Routes
 TextPress defines all routes as an array. Each route should have a url pattern and template files. You can write route conditions optionally. For a particular route, layout can be setting **layout => false**. TextPress comes with the following default routes. 
 ~~~
 // Site Route

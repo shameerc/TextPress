@@ -87,7 +87,7 @@ body > header {
 h1, h2, h3, h4 {
   display: inline;
   margin: 0;
-  font-weight: 600;
+  font-weight: bold;
 }
 ul, li {
   list-style-type: disc;

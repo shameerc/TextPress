@@ -97,6 +97,8 @@ You can write articles in markdown, html or mix of both formats. Artilces will b
 Right now it may not be befitting to your requirements. So don't be afraid to fork and customize TextPress. Just take the code, do what ever you want :)
 
 ##Thanks
+[Slim Framework](http://www.slimframework.com/)
+
 [PHP Markdown extra](http://michelf.com/projects/php-markdown/extra/)
 
 [Twitter Bootstrap](http://twitter.github.com/bootstrap/)

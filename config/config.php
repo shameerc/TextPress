@@ -9,10 +9,11 @@ return array(
 	'layout.file' => 'layout',    // Site layout file
 	'file.extension' => '.txt',   // file extension of articles
 	'disqus.username' => 'textpress',   // Your disqus username or false (Global)
+	'markdown'		=> true,
 	'base.directory'  => '',
 	// Define routes
 	'routes' => array(
-			// Site Route
+			// Site root
 			'__root__'=> array(
 					'route' => '/',
 					'template'=>'index',

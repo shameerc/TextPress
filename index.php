@@ -21,7 +21,6 @@ $config = require 'config/config.php';
 */
 
 $app = new Slim(array('view' => 'View','mode' => 'development'));
-
 $app->config($config);
 
 /**

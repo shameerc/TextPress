@@ -5,22 +5,20 @@
  "tag" : "intro"
 }
 
-TextPress is a simple, light wieght blogging engine for PHP nerds, which can be hosted in PHP clouds like PHPFOg, Pagodabox, Orchestra.io, etc. It is inspired from [toto](http://cloudhead.io/toto), a flat-file blog engine in Ruby. TextPress uses Git, the most popular version control system, for publishing articles. It is built on top of [Slim framework](http://www.slimframework.com/).
-You can use either Markdown syntax or pure html for writing posts. TextPress uses [php Markdown Extra](http://michelf.com/projects/php-markdown/extra/) for parsing Markdown.
+TextPress is a simple, light weight blogging engine for PHP nerds, which can be hosted in PHP clouds like PHPFog, Pagodabox, Orchestra.io, etc (though you can use traditional hosting to host TextPress, it is less preferred). It is inspired from [toto](http://cloudhead.io/toto), a flat-file blog engine in Ruby. It is built on top of [Slim](http://www.slimframework.com/), a light weght php framework. TextPress uses Git, the most popular version control system, for publishing articles. Articles can be written in markdown or html syntax. 
 
 ##Features
 
 * Simple, easy to use 
 * Publish article using git
-* Secure
+* Highly secure (as secure as your hosting platform)
 * Blazing fast
 * Write articles in text file, with metadata in json format.
 * Easy integration with disqus commenting system.
-* Designed to work on cloud
 
 ##Requirements
 
-* You should have Git installed
+* You should have Git installed, if using Git for publishing articles.
 * You should not hate using commands
 * Knowledge or willingness to learn HTML/Markdown
 * Account in any PHP PaaS like PHPFog, Pagodabox, etc.
@@ -51,9 +49,9 @@ Config file located in config directory returns an array of site configuration. 
 ~~~
 
 ###Routes
-TextPress defines all routes as an array. Each route should have a url pattern and template files. You can write route conditions optionally. For a particular route, layout can be setting **layout => false**. TextPress comes with the following default routes. 
+TextPress defines all routes as an array. Each route should have a url pattern and template files. You can write route conditions optionally. For a particular route, layout can be setting <code>layout => false</code>. TextPress comes with the following default routes. 
 ~~~
-// Site Route
+// Site root
 '__root__'=> array(
 		'route' => '/',
 		'template'=>'index',
@@ -81,4 +79,29 @@ TextPress defines all routes as an array. Each route should have a url pattern a
 		'layout' => false
 	)
 ~~~
-Right now the routes to article and archives are fixed. I will be adding custom  route feature in coming version.
+Right now the routes to article and archives are fixed. I will be adding the ability to have custom  route in coming version.
+
+###Writing posts
+All posts need to be stored in <code>article.path</code>. _articles_ is the default location for posts. To write a new post create a text file with name in the format <code>yyyy-mm-dd-article-title.txt</code>. URL to this article will be <code>/yyyy/mm/dd/article-title/</code>. An article will have a meta part and a content part. Article must start with the meta informations stored in json format. For example metadata of this artilce will look like this
+~~~
+{
+ "title":"Welcome to TextPress",
+ "date" : "07-02-2012",
+ "author" : "Admin",
+ "tag" : "intro"
+}
+~~~
+You can write articles in markdown, html or mix of both formats. Artilces will be passed to Markdown parser to generate html. If you are not all using markdown, it can be disabled by setting <code>markdown => false</code> in config file.
+
+##Customization
+Right now it may not be befitting to your requirements. So dont be afraid to fork and customize TextPress. Just take the code, do what ever you want :)
+
+##Thanks
+[PHP Markdown extra](http://michelf.com/projects/php-markdown/extra/)
+
+[Twitter Bootstrap](http://twitter.github.com/bootstrap/)
+
+##Issues
+If you find any issues feel free to report it [here](https://github.com/shameerc/TextPress/issues).
+
+#Happy Blogging

@@ -79,9 +79,8 @@ class Textpress
 	* @param $slim Object of slim
 	* @param $markdown bool 
 	*/
-	public function __construct(Slim $slim,$markdown = true)
+	public function __construct(Slim $slim)
 	{
-		$this->markdown = $markdown;
 		$this->slim = $slim;
 		$this->init();
 	}
@@ -95,6 +94,7 @@ class Textpress
 		if(!is_dir($this->slim->config('article.path'))){
 			throw new Exception('Article location is invalid');
 		}
+		$this->markdown 	= $this->slim->config('markdown');
 		$this->_articlePath = $this->slim->config('article.path');
 		if($this->markdown){
 			require_once __DIR__ . '/markdown.php';

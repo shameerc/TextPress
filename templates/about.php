@@ -75,8 +75,8 @@
 
   <body>
 
-    <div class="topbar">
-      <div class="fill">
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
         <div class="container">
           <h1>Example of a static page </h1>
         </div>

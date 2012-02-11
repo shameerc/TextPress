@@ -8,7 +8,7 @@ return array(
 	'templates.path' => './templates',  // Path to templates
 	'layout.file' => 'layout',    // Site layout file
 	'file.extension' => '.txt',   // file extension of articles
-	'disqus.username' => false,   // Your disqus username or false (Global)
+	'disqus.username' => 'textpress',   // Your disqus username or false (Global)
 	'base.directory'  => '',
 	// Define routes
 	'routes' => array(

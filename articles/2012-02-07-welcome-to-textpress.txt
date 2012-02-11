@@ -5,7 +5,7 @@
  "tag" : "intro"
 }
 
-TextPress is a simple, light weight blogging engine for PHP nerds, which can be hosted in PHP clouds like PHPFog, Pagodabox, Orchestra.io, etc (though you can use traditional hosting to host TextPress, it is less preferred). It is inspired from [toto](http://cloudhead.io/toto), a flat-file blog engine in Ruby. It is built on top of [Slim](http://www.slimframework.com/), a light weght php framework. TextPress uses Git, the most popular version control system, for publishing articles. Articles can be written in markdown or html syntax. 
+TextPress is a simple, light weight blogging engine for PHP nerds, which can be hosted in PHP clouds like PHPFog, Pagodabox, Orchestra.io, etc (though you can use traditional hosting to host TextPress, it is less preferred). It is inspired from [toto](http://cloudhead.io/toto), a flat-file blog engine in Ruby. It is built on top of [Slim](http://www.slimframework.com/), a light weight php framework. TextPress uses Git, the most popular version control system, for publishing articles. Articles can be written in markdown or html syntax. 
 
 ##Features
 
@@ -35,7 +35,7 @@ shameer@ubuntu:~$ git clone git@github.com:shameerc/TextPress.git
 <img src="/assets/images/filesystem.jpg" />
 #Configuration
 
-Config file located in config directory returns an array of site configuration. Configuration consists of site settings and routes. Site settings includes
+Config file located in config directory returns an array of site configuration which consists of site settings and routes. Site settings includes
 ~~~
 'date.format' => 'd M, Y',   // Date format to be used in article page (not for routes)   
 'author.name' => 'Author name', // Global author name 
@@ -49,7 +49,7 @@ Config file located in config directory returns an array of site configuration. 
 ~~~
 
 ###Routes
-TextPress defines all routes as an array. Each route should have a url pattern and template files. You can write route conditions optionally. For a particular route, layout can be setting <code>layout => false</code>. TextPress comes with the following default routes. 
+TextPress defines all routes as an array. Each route should have a url pattern and a template file. You can write route conditions optionally. For a particular route, layout can be setting <code>layout => false</code>. TextPress comes with the following default routes. 
 ~~~
 // Site root
 '__root__'=> array(
@@ -79,10 +79,10 @@ TextPress defines all routes as an array. Each route should have a url pattern a
 		'layout' => false
 	)
 ~~~
-Right now the routes to article and archives are fixed. I will be adding the ability to have custom  route in coming version.
+Right now the routes to article and archives are fixed. I will be adding the ability to have custom route in coming version.
 
 ###Writing posts
-All posts need to be stored in <code>article.path</code>. _articles_ is the default location for posts. To write a new post create a text file with name in the format <code>yyyy-mm-dd-article-title.txt</code>. URL to this article will be <code>/yyyy/mm/dd/article-title/</code>. An article will have a meta part and a content part. Article must start with the meta informations stored in json format. For example metadata of this artilce will look like this
+All posts need to be stored in <code>article.path</code>. _articles_ is the default location for posts. To write a new post, create a text file with name in the format <code>yyyy-mm-dd-article-title.txt</code>. URL to this article will be <code>/yyyy/mm/dd/article-title/</code>. An article will have a meta part and a content part. Article must start with the meta informations stored in json format. For example metadata of this artilce will look like this
 ~~~
 {
  "title":"Welcome to TextPress",
@@ -91,10 +91,10 @@ All posts need to be stored in <code>article.path</code>. _articles_ is the defa
  "tag" : "intro"
 }
 ~~~
-You can write articles in markdown, html or mix of both formats. Artilces will be passed to Markdown parser to generate html. If you are not all using markdown, it can be disabled by setting <code>markdown => false</code> in config file.
+You can write articles in markdown, html or mix of both formats. Artilces will be passed to Markdown parser for generating corresponding html. If you are not using markdown, it can be disabled globally by setting <code>markdown => false</code> in config file.
 
 ##Customization
-Right now it may not be befitting to your requirements. So dont be afraid to fork and customize TextPress. Just take the code, do what ever you want :)
+Right now it may not be befitting to your requirements. So don't be afraid to fork and customize TextPress. Just take the code, do what ever you want :)
 
 ##Thanks
 [PHP Markdown extra](http://michelf.com/projects/php-markdown/extra/)

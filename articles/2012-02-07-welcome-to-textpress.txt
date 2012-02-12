@@ -5,12 +5,12 @@
  "tag" : "intro"
 }
 
-TextPress is a simple, light weight blogging engine for PHP nerds, which can be hosted in PHP clouds like PHPFog, Pagodabox, Orchestra.io, etc (though you can use traditional hosting to host TextPress, it is less preferred). It is inspired from [toto](http://cloudhead.io/toto), a flat-file blog engine in Ruby. It is built on top of [Slim](http://www.slimframework.com/), a light weight php framework. TextPress uses Git, the most popular version control system, for publishing articles. Articles can be written in markdown or html syntax. 
+TextPress is a simple, light weight blogging engine for PHP geeks, which can be hosted in PHP clouds like PHP Fog, Pagodabox, Orchestra.io, etc (though you can use traditional hosting to host TextPress, it is less preferred). It is inspired from [toto](http://cloudhead.io/toto), a flat-file blog engine in Ruby. TextPress is built on top of [Slim](http://www.slimframework.com/), a light weight php framework. It uses Git, the most popular version control system, for publishing articles. Articles can be written in markdown or html syntax. 
 
 ##Features
 
 * Simple, easy to use 
-* Publish article using git
+* Publish article using git => Content versioning Yaay!
 * Highly secure (as secure as your hosting platform)
 * Blazing fast
 * Write articles in text file, with metadata in json format.
@@ -21,7 +21,7 @@ TextPress is a simple, light weight blogging engine for PHP nerds, which can be 
 * You should have Git installed, if using Git for publishing articles.
 * You should not hate using commands
 * Knowledge or willingness to learn HTML/Markdown
-* Account in any PHP PaaS like PHPFog, Pagodabox, etc.
+* Account in any PHP PaaS like PHP Fog, Pagodabox, etc.
 
 ##Get started
 
@@ -102,6 +102,8 @@ Right now it may not be befitting to your requirements. So don't be afraid to fo
 [PHP Markdown extra](http://michelf.com/projects/php-markdown/extra/)
 
 [Twitter Bootstrap](http://twitter.github.com/bootstrap/)
+
+[PHP Fog](http://phpfog.com) For their awesome platform which allowed me to host this site for free .
 
 ##Issues
 If you find any issues feel free to report it [here](https://github.com/shameerc/TextPress/issues).

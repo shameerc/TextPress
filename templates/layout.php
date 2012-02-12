@@ -36,7 +36,7 @@
         <div class="container">
           <h1><a class="brand" href="/"><?Php echo $global['site.name'];?></a></h1>
           <ul class="nav">
-            <li><a href="/">Home</a></li>
+            <li><a href="https://github.com/shameerc/TextPress" target="_blank">Source</a>
             <li><a href="/archives">Archives</a></li>
             <li><a href="/about">About</a></li>
           </ul>

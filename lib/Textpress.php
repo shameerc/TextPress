@@ -326,7 +326,8 @@ class Textpress
 				'site.name' => $this->slim->config('site.name'),
 				'site.title' => $this->slim->config('site.title'),
 				'disqus.username' => $this->slim->config('disqus.username'),
-				'base.directory' => $this->slim->config('base.directory')
+				'base.directory' => $this->slim->config('base.directory'),
+				'google.analytics' => $this->slim->config('google.analytics'),
 			);
 		$this->slim->view()->appendGlobalData($data);
 	}

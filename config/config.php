@@ -11,7 +11,7 @@ return array(
 	'disqus.username' => 'textpress',   // Your disqus username or false (Global)
 	'markdown'		=> true, //Enable of disable markdown parsing. 
 	'base.directory'  => '',
-	'google.analytics' => 'UA-29129685-1', // Google analytics code. set false to disable
+	'google.analytics' => false, // Google analytics code. set false to disable
 	// Define routes
 	'routes' => array(
 			// Site root

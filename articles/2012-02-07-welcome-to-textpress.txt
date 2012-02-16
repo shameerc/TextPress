@@ -1,6 +1,7 @@
 {
  "title":"Welcome to TextPress",
  "date" : "07-02-2012",
+ "slug" : "welcome-to-textpress",
  "author" : "Admin",
  "tag" : "intro"
 }
@@ -82,11 +83,12 @@ TextPress defines all routes as an array. Each route should have a url pattern a
 Right now the routes to article and archives are fixed. I will be adding the ability to have custom route in coming version.
 
 ###Writing posts
-All posts need to be stored in <code>article.path</code>. _articles_ is the default location for posts. To write a new post, create a text file with name in the format <code>yyyy-mm-dd-article-title.txt</code>. URL to this article will be <code>/yyyy/mm/dd/article-title/</code>. An article will have a meta part and a content part. Article must start with the meta informations stored in json format. For example metadata of this artilce will look like this
+All posts need to be stored in <code>article.path</code>. _articles_ is the default location for posts. To write a new post, create a text file with name in the format <code>yyyy-mm-dd-article-slug.txt</code>. URL to this article will be <code>/yyyy/mm/dd/article-slug/</code>. An article will have a meta part and a content part which must be separated with a blank line. Article must start with the meta informations stored in json format. "title" and "date" are the mandatory meta information. Inside meta, You can specify "article-slug" which is not necessary. If slug is not present, TextPress will take the title to create slug. For example, metadata of this artilce will look like this.
 ~~~
 {
  "title":"Welcome to TextPress",
  "date" : "07-02-2012",
+ "slug" : "welcome-to-textpress",
  "author" : "Admin",
  "tag" : "intro"
 }

@@ -146,10 +146,13 @@ class Textpress
 		if($this->markdown){ 
 			$contents = Markdown($contents);
 		}
+		$slug = (array_key_exists('slug', $meta) && $meta['slug'] !='') 
+					? $meta['slug']
+					: $this->slugize($meta['title']);
 		$article 	= array(
 						'meta' => $meta, 
 						'content' => $contents,
-						'url'=>$this->getUrl($meta['date'],$meta['title'])
+						'url'=>$this->getUrl($meta['date'],$slug)
 						);
 		if($isArticle){
 			$this->slim->view()->appendGlobalData($meta); 
@@ -295,11 +298,8 @@ class Textpress
 	* 
 	* @todo Extend this function for custom urls
 	*/
-	function getUrl($date,$title)
+	function getUrl($date,$slug)
 	{
-		$slug = strtolower(trim($title));
-		$find = array(' ', '&', '\r\n', '\n', '+',',');
-		$slug = str_replace ($find, '-', $slug);
 		$date = new DateTime($date);
 		$date = $date->format('Y-m-d');
 		$dateSplit = explode('-', $date);
@@ -312,6 +312,19 @@ class Textpress
 									'article'=>$slug
 								)
 							) ;
+	}
+
+	/**
+	* Slugize an article title
+	* @var String article title
+	* @return String slug
+	*/
+	public function slugize($string)
+	{
+		$slug = strtolower(trim($string));
+		$find = array(' ', '&', '\r\n', '\n', '+',',');
+		$slug = str_replace ($find, '-', $slug);
+		return $slug;
 	}
 
 	/**

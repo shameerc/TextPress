@@ -3,8 +3,7 @@
 /**
 * Required necessary files
 */
- ini_set('display_errors',true);
- error_reporting(E_ALL);
+
 require 'Slim/Slim.php';
 require 'lib/Textpress.php';
 require 'lib/View.php';
@@ -20,7 +19,7 @@ $config = require 'config/config.php';
 * and set the configurations from config file
 */
 
-$app = new Slim(array('view' => 'View','mode' => 'development'));
+$app = new Slim(array('view' => 'View','mode' => 'production'));
 $app->config($config);
 
 /**

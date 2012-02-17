@@ -203,7 +203,7 @@ class Textpress
 	* @param  $format String Date format
 	* @return Array archives 
 	*/
-	function setArchives($date=null,$format='')
+	public function setArchives($date=null,$format='')
 	{
 		$this->viewData['archives']  = array();
 		$archives = array();
@@ -225,7 +225,8 @@ class Textpress
 	* @param $date Input date
 	* @param $format Date format
 	*/
-	function dateFormat($date,$format=null){
+	public function dateFormat($date,$format=null)
+	{
 		$format = is_null($format) ? $this->slim->config('date.format') : $format;
 		$date  = new DateTime($date);
 		return $date->format($format);	
@@ -236,7 +237,8 @@ class Textpress
 	* @param $path String File name
 	* @return String Path to file or flase if file does not exists
 	*/
-	function getFullPath($path){
+	public function getFullPath($path)
+	{
 		if(in_array($path , $this->fileNames)){
 			return $this->_articlePath . '/' . $path ;
 		}
@@ -247,7 +249,7 @@ class Textpress
 	* Set Application routes based on the routes specified in config
 	* Also sets layout file if it's enabled for that specific route
 	*/
-	function setRoutes()
+	public function setRoutes()
 	{
 		$this->_routes = $this->slim->config('routes');
 		foreach ($this->_routes as $key => $value) {
@@ -285,7 +287,7 @@ class Textpress
 	* @param $params Array route parameters
 	* @return String file name 
 	*/
-	function getPath($params)
+	public function getPath($params)
 	{
 		$ext = $this->slim->config('file.extension');
 		return implode('-',$params) . $ext;
@@ -298,7 +300,7 @@ class Textpress
 	* 
 	* @todo Extend this function for custom urls
 	*/
-	function getUrl($date,$slug)
+	public function getUrl($date,$slug)
 	{
 		$date = new DateTime($date);
 		$date = $date->format('Y-m-d');
@@ -331,7 +333,7 @@ class Textpress
 	* Set config values to View
 	* @todo make it comfortable
 	*/
-	function setViewConfig()
+	public function setViewConfig()
 	{
 		$data = array(
 				'date.format' => $this->slim->config('date.format'),
@@ -356,7 +358,7 @@ class Textpress
 	/**
 	* Set layout file
 	*/
-	function setLayout()
+	public function setLayout()
 	{
 		$this->slim->view()->setLayout($this->slim->config('layout.file') . '.php');
 	}
@@ -364,7 +366,7 @@ class Textpress
 	/**
 	* Render template
 	*/
-	function render($template){
+	public function render($template){
 		$this->slim->render($template,$this->viewData());
 	}
 

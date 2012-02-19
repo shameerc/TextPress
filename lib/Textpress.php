@@ -39,36 +39,50 @@
 class Textpress
 {
 	/**
-	* @var array of File names
+	* Array of file names
+	*
+	* @var array
 	*/
 	public $fileNames = array();
 	
 	/**
-	* @var string Article location
+	* Article location
+	*
+	* @var string 
 	*/
 	private $_articlePath;
 
 	/**
-	* @var bool if need a markdown parser or not
+	* Do we need markdown parser?
+	* 
+	* @var bool
 	*/
 	public $markdown ;
 
 	/**
-	* @var Array  Articles
+	* Articles
+	*
+	* @var array 
 	*/
 	public $allArticles = array();
 	
 	/**
-	* @var Array View data
+	* View data
+	*
+	* @var array
 	*/
 	public $viewData = array();
 
 	/**
-	* @var bool Enable or disable layout
+	* Enable or disable layout
+	*
+	* @var bool
 	*/
 	public $enableLayout = true;
 
 	/**
+	* Slim object
+	*
 	* @var Slim
 	*/
 	public $slim;
@@ -76,8 +90,7 @@ class Textpress
 	/**
 	* Constructor
 	* 
-	* @param $slim Object of slim
-	* @param $markdown bool 
+	* @param Slim $slim Object of slim
 	*/
 	public function __construct(Slim $slim)
 	{
@@ -128,10 +141,11 @@ class Textpress
 
 	/**
 	* Loads an article
-	* @param $fileName Name of article file
-	* @param $isArticle bool For requests to article it should 
+	*
+	* @param string $fileName Name of article file
+	* @param bool $isArticle For requests to article it should 
 	*						 merge meta data to global data
-	* @return Article 
+	* @return array 
 	*/
 	public function loadArticle($fileName,$isArticle=false)
 	{
@@ -162,6 +176,7 @@ class Textpress
 
 	/**
 	* Loads all article
+	*
 	* @return array Articles
 	*/
 	public function loadArticles()
@@ -175,7 +190,8 @@ class Textpress
 
 	/**
 	* Load archives based on current route
-	* @param @route array Route params
+	*
+	* @param array $route Route params
 	*
 	*/
 	public function loadArchives($route)
@@ -199,9 +215,10 @@ class Textpress
 
 	/**
 	* Sets archives to be shown to viewData array.
-	* @param  $date Date from arguments passed via rout
-	* @param  $format String Date format
-	* @return Array archives 
+	*
+	* @param  Date $date from arguments passed via rout
+	* @param  String $format Date format
+	* @return array archives 
 	*/
 	public function setArchives($date=null,$format='')
 	{

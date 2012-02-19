@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <title>
       <?php 
-        echo $global['site.name'] .' | '. $global['site.title'];
+        $title= (isset($global['title'])) ? $global['title'] : $global['site.title'];
+        echo $global['site.name'] .' | '. $title;
       ?>
     </title>
     <meta name="description" content="">

@@ -185,7 +185,24 @@ class Textpress
 		foreach($articles as $article){
 			$allArticles[] = $this->loadArticle($article);
 		}
-		return $this->viewData['articles'] =	$allArticles;
+		return $this->viewData['articles'] =	$this->sortArticles($allArticles);
+	}
+
+	/**
+	*
+	* Sort articles based on date
+	*
+	* @param array $articles Array of articles
+	*/
+	public function sortArticles($articles)
+	{
+		$results	= array();
+		foreach($articles as $article){
+			$date = $this->dateFormat($article['meta']['date'],'Y-m-d');
+			$results[$date] = $article;
+		}
+		krsort($results);
+		return $results;
 	}
 
 	/**
@@ -271,7 +288,8 @@ class Textpress
 		$this->_routes = $this->slim->config('routes');
 		foreach ($this->_routes as $key => $value) {
 			$self = $this; 
-			$this->slim->map($value['route'],function() use($self,$key,$value){
+			$prefix = $self->slim->config('prefix');
+			$this->slim->map($prefix . $value['route'],function() use($self,$key,$value){
 				$args = func_get_args();
 				if(isset($value['layout']) && !$value['layout']){
 					$self->enableLayout = false;
@@ -322,6 +340,7 @@ class Textpress
 		$date = new DateTime($date);
 		$date = $date->format('Y-m-d');
 		$dateSplit = explode('-', $date);
+		$prefix = $this->slim->config('prefix');
 		return $this->slim->urlFor(
 								'article',
 								array(
@@ -335,7 +354,7 @@ class Textpress
 
 	/**
 	* Slugize an article title
-	* @var String article title
+	* @param $string String article title
 	* @return String slug
 	*/
 	public function slugize($string)
@@ -360,12 +379,13 @@ class Textpress
 				'disqus.username' => $this->slim->config('disqus.username'),
 				'base.directory' => $this->slim->config('base.directory'),
 				'google.analytics' => $this->slim->config('google.analytics'),
+				'prefix' => $this->slim->config('prefix'),
 			);
 		$this->slim->view()->appendGlobalData($data);
 	}
 
 	/**
-	* Returns array of view data
+	* @return array view data
 	*/
 	public function viewData()
 	{

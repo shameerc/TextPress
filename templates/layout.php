@@ -48,11 +48,11 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <h1><a class="brand" href="/"><?Php echo $global['site.name'];?></a></h1>
+          <h1><a class="brand" href="<?Php echo $global['prefix'];?>/"><?Php echo $global['site.name'];?></a></h1>
           <ul class="nav">
             <li><a href="https://github.com/shameerc/TextPress" target="_blank">Source</a>
-            <li><a href="/archives">Archives</a></li>
-            <li><a href="/about">About</a></li>
+            <li><a href="<?Php echo $global['prefix'];?>/archives">Archives</a></li>
+            <li><a href="<?Php echo $global['prefix'];?>/about">About</a></li>
           </ul>
         </div>
       </div>

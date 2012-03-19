@@ -22,7 +22,7 @@ return array(
 					'layout' => true
 				),
 			'article' => array(
-					'route' => '/:year/:month/:date/:article(/)',
+					'route' => '/:year/:month/:date/:article',
 					'template'=>'article',
 					'conditions' => array(
 										 'year' => '(19|20)\d\d'

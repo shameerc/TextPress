@@ -174,6 +174,10 @@ class Textpress
 		return $this->viewData['article'] = $article;
 	}
 
+	public function getArticle($url){
+		return $this->allArticles[$url];
+	}
+
 	/**
 	* Loads all article
 	*
@@ -181,11 +185,21 @@ class Textpress
 	*/
 	public function loadArticles()
 	{
-		$articles = $this->getfileNames();
-		foreach($articles as $article){
-			$allArticles[] = $this->loadArticle($article);
+		$filenames = $this->getfileNames();
+		foreach($filenames as $filename){
+			$article = $this->loadArticle($filename);
+			$slug = isset($article['meta']['slug']) 
+						? $article['meta']['slug']
+						: $this->slugize($article['meta']['title']);
+			$prefix = $this->slim->config('prefix');
+			$url  	= $this->getUrl($article['meta']['date'],$slug);
+			$url 	= str_replace($prefix, '', $url);
+			$allArticles[$url] = $article;
 		}
-		return $this->viewData['articles'] =	$this->sortArticles($allArticles);
+		$this->allArticles = $allArticles;
+	
+
+		return $this->viewData['articles'] = $this->sortArticles($allArticles);
 	}
 
 	/**
@@ -303,7 +317,8 @@ class Textpress
 				}
 				elseif($key== 'article'){
 					$ext = $self->slim->config('file.extension');
-					$self->loadArticle($self->getPath($args),true);
+					$self->loadArticles();
+					$self->getArticle($self->getPath($args));
 				}
 				elseif($key=='archives'){
 					$self->loadArchives($args);
@@ -325,13 +340,13 @@ class Textpress
 	public function getPath($params)
 	{
 		$ext = $this->slim->config('file.extension');
-		return implode('-',$params) . $ext;
+		return '/' . implode('/',$params) ;
 	}
 
 	/**
 	* Creates url from a Date and Title
-	* @param $date Date of article
-	* @param $title Article title
+	* @param string $date Date of article
+	* @param string $slug Article title
 	* 
 	* @todo Extend this function for custom urls
 	*/
@@ -340,7 +355,6 @@ class Textpress
 		$date = new DateTime($date);
 		$date = $date->format('Y-m-d');
 		$dateSplit = explode('-', $date);
-		$prefix = $this->slim->config('prefix');
 		return $this->slim->urlFor(
 								'article',
 								array(

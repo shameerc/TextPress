@@ -197,8 +197,6 @@ class Textpress
 			$allArticles[$url] = $article;
 		}
 		$this->allArticles = $allArticles;
-	
-
 		return $this->viewData['articles'] = $this->sortArticles($allArticles);
 	}
 
@@ -356,7 +354,7 @@ class Textpress
 		$date = $date->format('Y-m-d');
 		$dateSplit = explode('-', $date);
 		return $this->slim->urlFor(
-								'article',
+					 			'article',
 								array(
 									'year'=>$dateSplit[0],
 									'month'=>$dateSplit[1],
@@ -368,8 +366,8 @@ class Textpress
 
 	/**
 	* Slugize an article title
-	* @param $string String article title
-	* @return String slug
+	* @param string  $string  article title
+	* @return string URL slug corresponding to the string
 	*/
 	public function slugize($string)
 	{
@@ -416,15 +414,18 @@ class Textpress
 
 	/**
 	* Render template
+	* @param string $template template file to be rendered
 	*/
-	public function render($template){
+	public function render($template)
+	{
 		$this->slim->render($template,$this->viewData());
 	}
 
 	/**
 	* Run slim
 	*/
-	public function run(){
+	public function run()
+	{
 		$this->slim->run();
 	}
 }

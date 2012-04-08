@@ -147,7 +147,7 @@ class Textpress
 	*						 merge meta data to global data
 	* @return array 
 	*/
-	public function loadArticle($fileName,$isArticle=false)
+	public function loadArticle($fileName)
 	{
 		if(!($fullPath = $this->getFullPath($fileName))){
 			return false;
@@ -168,14 +168,22 @@ class Textpress
 						'content' => $contents,
 						'url'=>$this->getUrl($meta['date'],$slug)
 						);
-		if($isArticle){
-			$this->slim->view()->appendGlobalData($meta); 
-		}
 		return $this->viewData['article'] = $article;
 	}
 
-	public function getArticle($url){
-		return $this->allArticles[$url];
+	/**
+	* Sets view data for an article route.
+	*
+	* @param string $url URL without prefix
+	*/
+	public function setArticle($url)
+	{
+		if(! isset( $this->allArticles[$url] )){
+			$this->notFound();
+		}
+		$article = $this->allArticles[$url];
+		$this->slim->view()->appendGlobalData($article['meta']); 
+		$this->viewData['article'] = $article;
 	}
 
 	/**
@@ -201,7 +209,6 @@ class Textpress
 	}
 
 	/**
-	*
 	* Sort articles based on date
 	*
 	* @param array $articles Array of articles
@@ -221,7 +228,6 @@ class Textpress
 	* Load archives based on current route
 	*
 	* @param array $route Route params
-	*
 	*/
 	public function loadArchives($route)
 	{
@@ -253,12 +259,11 @@ class Textpress
 	{
 		$this->viewData['archives']  = array();
 		$archives = array();
-		$articles = $this->loadArticles();
 		if(is_null($date)){
-			$archives = $articles;
+			$archives = $this->allArticles;
 		}
 		else{
-			foreach($articles as $article){
+			foreach($this->allArticles as $article){
 				if($date == $this->dateFormat($article['meta']['date'],$format))
 					$archives[] = $article;
 			}
@@ -267,7 +272,20 @@ class Textpress
 	}
 
 	/**
+	* Custom 404 handler
+	* Function can be called for handling 404 errors
+	*/
+	public function notFound()
+	{
+		$self = $this;
+		$this->slim->notFound(function() use ($self){
+			$self->render('404');
+		});
+	}
+
+	/**
 	* Helper function for date formatting
+	*
 	* @param $date Input date
 	* @param $format Date format
 	*/
@@ -280,6 +298,7 @@ class Textpress
 
 	/**
 	* Function to get full path of article file from its filename
+	*
 	* @param $path String File name
 	* @return String Path to file or flase if file does not exists
 	*/
@@ -309,14 +328,9 @@ class Textpress
 				else{
 					$self->setLayout();
 				}
-
-				if($key == '__root__'){
-					$self->loadArticles();
-				}
-				elseif($key== 'article'){
-					$ext = $self->slim->config('file.extension');
-					$self->loadArticles();
-					$self->getArticle($self->getPath($args));
+				$self->loadArticles();
+				if($key== 'article'){
+					$self->setArticle($self->getPath($args));
 				}
 				elseif($key=='archives'){
 					$self->loadArchives($args);
@@ -343,10 +357,9 @@ class Textpress
 
 	/**
 	* Creates url from a Date and Title
+	*
 	* @param string $date Date of article
 	* @param string $slug Article title
-	* 
-	* @todo Extend this function for custom urls
 	*/
 	public function getUrl($date,$slug)
 	{
@@ -414,6 +427,7 @@ class Textpress
 
 	/**
 	* Render template
+	*
 	* @param string $template template file to be rendered
 	*/
 	public function render($template)

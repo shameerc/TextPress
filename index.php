@@ -1,7 +1,7 @@
 <?php
 
 /**
-* Required necessary files
+* Require necessary files
 */
 
 require 'Slim/Slim.php';

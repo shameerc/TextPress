@@ -51,7 +51,7 @@ class Textpress
 	/**
 	* @var bool if need a markdown parser or not
 	*/
-	public $markdown ;
+	public $markdown;
 
 	/**
 	* @var Array  Articles
@@ -266,11 +266,11 @@ class Textpress
 				if($key == '__root__'){
 					$self->loadArticles();
 				}
-				elseif($key== 'article'){
+				elseif($key == 'article'){
 					$ext = $self->slim->config('file.extension');
 					$self->loadArticle($self->getPath($args),true);
 				}
-				elseif($key=='archives'){
+				elseif($key =='archives'){
 					$self->loadArchives($args);
 				}
 				$self->render($value['template']);

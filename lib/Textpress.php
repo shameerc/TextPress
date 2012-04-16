@@ -108,7 +108,7 @@ class Textpress
 	*/
 	public function getfileNames()
 	{
-		if (empty($this->fileNames)) 
+		if (empty($this->fileNames))
 		{
 			$dir = new DirectoryIterator($this->_articlePath);
 			foreach($dir as $file){
@@ -236,11 +236,11 @@ class Textpress
 	/**
 	* Function to get full path of article file from its filename
 	* @param $path String File name
-	* @return String Path to file or flase if file does not exists
+	* @return String Path to file or false if file does not exists
 	*/
 	public function getFullPath($path)
 	{
-		if(in_array($path , $this->fileNames)){
+		if(in_array($path , $this->getFileNames())){
 			return $this->_articlePath . '/' . $path ;
 		}
 		return false;

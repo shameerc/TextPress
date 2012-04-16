@@ -21,6 +21,10 @@ $config = require 'config/config.php';
 
 $app = new Slim(array('view' => 'View','mode' => 'production'));
 $app->config($config);
+$app->notFound(function () use ($app) {
+	$app->view()->setLayout($app->config('layout.file') . '.php');
+	$app->render("404");
+});
 
 /**
 * Create an object of Textpress and pass the object of Slim to it.

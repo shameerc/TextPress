@@ -100,22 +100,7 @@ class Textpress
 			require_once __DIR__ . '/markdown.php';
 		}
 		$this->setViewConfig();
-		$this->loadFiles();
 		$this->setRoutes();
-	}
-
-	/**
-	* Load article files to an array and sort based on date
-	*/
-	public function loadFiles()
-	{
-		$dir = new DirectoryIterator($this->_articlePath);
-		foreach($dir as $file){
-			if($file->isFile()){
-				$this->fileNames[] = $file->getFilename();
-			}
-		}
-		rsort($this->fileNames);
 	}
 
 	/**
@@ -123,6 +108,16 @@ class Textpress
 	*/
 	public function getfileNames()
 	{
+		if (empty($this->fileNames)) 
+		{
+			$dir = new DirectoryIterator($this->_articlePath);
+			foreach($dir as $file){
+				if($file->isFile()){
+					$this->fileNames[] = $file->getFilename();
+				}
+			}
+			rsort($this->fileNames);
+		}
 		return $this->fileNames;
 	}
 

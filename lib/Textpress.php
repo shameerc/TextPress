@@ -269,7 +269,7 @@ class Textpress
 					$self->setLayout();
 				}
 
-				if($key == '__root__'){
+				if($key == '__root__' || $key == 'rss' || $key == 'atom'){
 					$self->loadArticles(10);
 				}
 				elseif($key == 'article'){

@@ -164,13 +164,19 @@ class Textpress
 	* Loads all article
 	* @return array Articles
 	*/
-	public function loadArticles()
+	public function loadArticles($numbers = -1)
 	{
 		$articles = $this->getfileNames();
+		$i = 0;
+		$allArticles = array();
 		foreach($articles as $article){
+			if ($numbers > -1 && $i == $numbers) {
+				break;
+			}
 			$allArticles[] = $this->loadArticle($article);
+			$i++;
 		}
-		return $this->viewData['articles'] =	$allArticles;
+		return $this->viewData['articles'] = $allArticles;
 	}
 
 	/**
@@ -264,7 +270,7 @@ class Textpress
 				}
 
 				if($key == '__root__'){
-					$self->loadArticles();
+					$self->loadArticles(10);
 				}
 				elseif($key == 'article'){
 					$ext = $self->slim->config('file.extension');

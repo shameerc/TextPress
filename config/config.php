@@ -41,6 +41,16 @@ return array(
 					'route' => '/about',
 					'template' => 'about',
 					'layout' => false
+				),
+			'rss' => array(
+					'route' => '/feed/rss(.xml)',
+					'template' => 'rss',
+					'layout' => false,
+				),
+			'atom' => array(	
+					'route' => '/feed(/atom(.xml))',
+					'template' => 'atom',
+					'layout' => false,
 				)
 		),
 );

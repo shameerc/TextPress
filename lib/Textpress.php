@@ -328,13 +328,20 @@ class Textpress
 				else{
 					$self->setLayout();
 				}
+				
+				// load all articles
+				// This isn't necessary for route to an article though
+				// will help to generate tag cloud/ category listing
 				$self->loadArticles();
+
+				//set view data for article  and archives routes
 				if($key== 'article'){
 					$self->setArticle($self->getPath($args));
 				}
 				elseif($key=='archives'){
 					$self->loadArchives($args);
 				}
+				// render the template file
 				$self->render($value['template']);
 			})->via('GET')
 			  ->name($key)

@@ -51,7 +51,7 @@ class Textpress
 	/**
 	* @var bool if need a markdown parser or not
 	*/
-	public $markdown ;
+	public $markdown;
 
 	/**
 	* @var Array  Articles
@@ -100,22 +100,7 @@ class Textpress
 			require_once __DIR__ . '/markdown.php';
 		}
 		$this->setViewConfig();
-		$this->loadFiles();
 		$this->setRoutes();
-	}
-
-	/**
-	* Load article files to an array and sort based on date
-	*/
-	public function loadFiles()
-	{
-		$dir = new DirectoryIterator($this->_articlePath);
-		foreach($dir as $file){
-			if($file->isFile()){
-				$this->fileNames[] = $file->getFilename();
-			}
-		}
-		rsort($this->fileNames);
 	}
 
 	/**
@@ -123,6 +108,16 @@ class Textpress
 	*/
 	public function getfileNames()
 	{
+		if (empty($this->fileNames))
+		{
+			$dir = new DirectoryIterator($this->_articlePath);
+			foreach($dir as $file){
+				if($file->isFile()){
+					$this->fileNames[] = $file->getFilename();
+				}
+			}
+			rsort($this->fileNames);
+		}
 		return $this->fileNames;
 	}
 
@@ -164,13 +159,19 @@ class Textpress
 	* Loads all article
 	* @return array Articles
 	*/
-	public function loadArticles()
+	public function loadArticles($numbers = -1)
 	{
 		$articles = $this->getfileNames();
+		$i = 0;
+		$allArticles = array();
 		foreach($articles as $article){
+			if ($numbers > -1 && $i == $numbers) {
+				break;
+			}
 			$allArticles[] = $this->loadArticle($article);
+			$i++;
 		}
-		return $this->viewData['articles'] =	$allArticles;
+		return $this->viewData['articles'] = $allArticles;
 	}
 
 	/**
@@ -235,11 +236,11 @@ class Textpress
 	/**
 	* Function to get full path of article file from its filename
 	* @param $path String File name
-	* @return String Path to file or flase if file does not exists
+	* @return String Path to file or false if file does not exists
 	*/
 	public function getFullPath($path)
 	{
-		if(in_array($path , $this->fileNames)){
+		if(in_array($path , $this->getFileNames())){
 			return $this->_articlePath . '/' . $path ;
 		}
 		return false;
@@ -263,14 +264,14 @@ class Textpress
 					$self->setLayout();
 				}
 
-				if($key == '__root__'){
-					$self->loadArticles();
+				if($key == '__root__' || $key == 'rss' || $key == 'atom'){
+					$self->loadArticles(10);
 				}
-				elseif($key== 'article'){
+				elseif($key == 'article'){
 					$ext = $self->slim->config('file.extension');
 					$self->loadArticle($self->getPath($args),true);
 				}
-				elseif($key=='archives'){
+				elseif($key =='archives'){
 					$self->loadArchives($args);
 				}
 				$self->render($value['template']);
@@ -321,13 +322,26 @@ class Textpress
 	* @var String article title
 	* @return String slug
 	*/
-	public function slugize($string)
+	public function slugize($str)
 	{
-		$slug = strtolower(trim($string));
-		$find = array(' ', '&', '\r\n', '\n', '+',',');
-		$slug = str_replace ($find, '-', $slug);
-		return $slug;
-	}
+		$str = strtolower(trim($str));
+ 		
+ 		$chars = array("ä", "ö", "ü", "ß");
+   		$replacements = array("ae", "oe", "ue", "ss");
+		$str = str_replace($chars, $replacements, $str);
+
+		$pattern = array("/(é|è|ë|ê)/", "/(ó|ò|ö|ô)/", "/(ú|ù|ü|û)/");
+   		$replacements = array("e", "o", "u");
+		$str = preg_replace($pattern, $replacements, $str);
+
+		$pattern = array(":", "!", "?", ".", "/", "'");
+		$str = str_replace($pattern, "", $str);
+		
+		$pattern = array("/[^a-z0-9-]/", "/-+/");
+		$str = preg_replace($pattern, "-", $str);
+		
+		return $str;
+    }
 
 	/**
 	* Set config values to View

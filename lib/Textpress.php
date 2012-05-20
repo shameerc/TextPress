@@ -6,7 +6,7 @@
  * 
  * @author 		Shameer C <me@shameerc.com>
  * @copyright   2012 - Shameer C
- * @version 	Alpha
+ * @version 	Beta
  * @todo        Add some error and exception handling
  *
  * MIT LICENSE

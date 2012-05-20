@@ -8,7 +8,7 @@ return array(
 	'templates.path' => './templates',  // Path to templates
 	'layout.file' => 'layout',    // Site layout file
 	'file.extension' => '.txt',   // file extension of articles
-	'disqus.username' => 'textpress',   // Your disqus username or false (Global)
+	'disqus.username' => '',   // Your disqus username or false (Global)
 	'markdown'		=> true, //Enable of disable markdown parsing. 
 	'path.directory'  => '',
 	'prefix' => '',   // prefix to be added with all URLs. eg : '/blog'

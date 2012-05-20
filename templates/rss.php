@@ -3,7 +3,9 @@ header("Content-Type:text/xml");
 echo '<?xml version="1.0" encoding="UTF-8" ?>';
 $lastBuildDate = "";
 if($articles) {
-	$lastBuildDate = date('c', strtotime($articles[0]['meta']['date']));
+        reset($articles);
+        $key = key($articles);
+	$lastBuildDate = date('c', strtotime($articles[$key]['meta']['date']));
 }
 ?>
 <rss version="2.0">

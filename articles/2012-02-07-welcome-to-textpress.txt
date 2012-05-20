@@ -46,7 +46,11 @@ Config file located in config directory returns an array of site configuration w
 'templates.path' => './templates',  // Path to templates
 'layout.file' => 'layout',    // Site layout file
 'file.extension' => '.txt',   // file extension of articles
-'disqus.username' => false,   // Your disqus username or false (Global)
+'disqus.username' => 'textpress',   // Your disqus username or false (Global)
+'markdown'		=> true, //Enable of disable markdown parsing. 
+'path.directory'  => '',
+'prefix' => '',   // prefix to be added with all URLs. eg : '/blog'
+'google.analytics' => false, // Google analytics code. set false to disable
 ~~~
 
 ###Routes
@@ -56,9 +60,10 @@ TextPress defines all routes as an array. Each route should have a url pattern a
 '__root__'=> array(
 		'route' => '/',
 		'template'=>'index',
+		'layout' => true
 	),
 'article' => array(
-		'route' => '/:year/:month/:date/:article(/)',
+		'route' => '/:year/:month/:date/:article',
 		'template'=>'article',
 		'conditions' => array(
 							 'year' => '(19|20)\d\d'
@@ -78,6 +83,16 @@ TextPress defines all routes as an array. Each route should have a url pattern a
 		'route' => '/about',
 		'template' => 'about',
 		'layout' => false
+	),
+'rss' => array(
+		'route' => '/feed/rss(.xml)',
+		'template' => 'rss',
+		'layout' => false,
+	),
+'atom' => array(	
+		'route' => '/feed(/atom(.xml))',
+		'template' => 'atom',
+		'layout' => false,
 	)
 ~~~
 Right now the routes to article and archives are fixed. I will be adding the ability to have custom route in coming version.

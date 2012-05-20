@@ -51,7 +51,8 @@ class View extends Slim_View
 		}
 		// make sure buffers flushed
 		ob_end_flush(); 
-	    ob_flush(); 
+		if(ob_get_length() !== false)
+	    	ob_flush();
 		ob_start();
 		extract(array('content' => $content, 'global' => $this->global));
 		if($this->layout){

@@ -39,36 +39,50 @@
 class Textpress
 {
 	/**
-	* @var array of File names
+	* Array of file names
+	*
+	* @var array
 	*/
 	public $fileNames = array();
 	
 	/**
-	* @var string Article location
+	* Article location
+	*
+	* @var string 
 	*/
 	private $_articlePath;
 
 	/**
-	* @var bool if need a markdown parser or not
+	* Do we need markdown parser?
+	* 
+	* @var bool
 	*/
 	public $markdown;
 
 	/**
-	* @var Array  Articles
+	* Articles
+	*
+	* @var array 
 	*/
 	public $allArticles = array();
 	
 	/**
-	* @var Array View data
+	* View data
+	*
+	* @var array
 	*/
 	public $viewData = array();
 
 	/**
-	* @var bool Enable or disable layout
+	* Enable or disable layout
+	*
+	* @var bool
 	*/
 	public $enableLayout = true;
 
 	/**
+	* Slim object
+	*
 	* @var Slim
 	*/
 	public $slim;
@@ -76,8 +90,7 @@ class Textpress
 	/**
 	* Constructor
 	* 
-	* @param $slim Object of slim
-	* @param $markdown bool 
+	* @param Slim $slim Object of slim
 	*/
 	public function __construct(Slim $slim)
 	{
@@ -123,12 +136,13 @@ class Textpress
 
 	/**
 	* Loads an article
-	* @param $fileName Name of article file
-	* @param $isArticle bool For requests to article it should 
+	*
+	* @param string $fileName Name of article file
+	* @param bool $isArticle For requests to article it should 
 	*						 merge meta data to global data
-	* @return Article 
+	* @return array 
 	*/
-	public function loadArticle($fileName,$isArticle=false)
+	public function loadArticle($fileName)
 	{
 		if(!($fullPath = $this->getFullPath($fileName))){
 			return false;
@@ -147,37 +161,73 @@ class Textpress
 		$article 	= array(
 						'meta' => $meta, 
 						'content' => $contents,
-						'url'=>$this->getUrl($meta['date'],$slug)
+						'url'=>$this->getArticleUrl($meta['date'],$slug)
 						);
-		if($isArticle){
-			$this->slim->view()->appendGlobalData($meta); 
-		}
 		return $this->viewData['article'] = $article;
 	}
 
 	/**
+	* Sets view data for an article route.
+	*
+	* @param string $url URL without prefix
+	*/
+	public function setArticle($url)
+	{
+		if(! isset( $this->allArticles[$url] )){
+			$this->notFound();
+		}
+		$article = $this->allArticles[$url];
+		$this->slim->view()->appendGlobalData($article['meta']); 
+		$this->viewData['article'] = $article;
+	}
+
+	/**
 	* Loads all article
+	*
 	* @return array Articles
 	*/
 	public function loadArticles($numbers = -1)
 	{
-		$articles = $this->getfileNames();
+		$filenames = $this->getfileNames();
 		$i = 0;
 		$allArticles = array();
-		foreach($articles as $article){
+		foreach($filenames as $filename){
 			if ($numbers > -1 && $i == $numbers) {
 				break;
 			}
-			$allArticles[] = $this->loadArticle($article);
+			$article = $this->loadArticle($filename);
+			$slug = isset($article['meta']['slug']) 
+						? $article['meta']['slug']
+						: $this->slugize($article['meta']['title']);
+			$prefix = $this->slim->config('prefix');
+			$url  	= $this->getArticleUrl($article['meta']['date'],$slug);
+			$allArticles[$url] = $article;
 			$i++;
 		}
-		return $this->viewData['articles'] = $allArticles;
+		$this->allArticles = $allArticles;
+		return $this->viewData['articles'] = $this->sortArticles($allArticles);
+	}
+
+	/**
+	* Sort articles based on date
+	*
+	* @param array $articles Array of articles
+	*/
+	public function sortArticles($articles)
+	{
+		$results	= array();
+		foreach($articles as $article){
+			$date = $this->dateFormat($article['meta']['date'],'Y-m-d');
+			$results[$date] = $article;
+		}
+		krsort($results);
+		return $results;
 	}
 
 	/**
 	* Load archives based on current route
-	* @param @route array Route params
 	*
+	* @param array $route Route params
 	*/
 	public function loadArchives($route)
 	{
@@ -200,20 +250,20 @@ class Textpress
 
 	/**
 	* Sets archives to be shown to viewData array.
-	* @param  $date Date from arguments passed via rout
-	* @param  $format String Date format
-	* @return Array archives 
+	*
+	* @param  Date $date from arguments passed via rout
+	* @param  String $format Date format
+	* @return array archives 
 	*/
 	public function setArchives($date=null,$format='')
 	{
 		$this->viewData['archives']  = array();
 		$archives = array();
-		$articles = $this->loadArticles();
 		if(is_null($date)){
-			$archives = $articles;
+			$archives = $this->allArticles;
 		}
 		else{
-			foreach($articles as $article){
+			foreach($this->allArticles as $article){
 				if($date == $this->dateFormat($article['meta']['date'],$format))
 					$archives[] = $article;
 			}
@@ -222,7 +272,21 @@ class Textpress
 	}
 
 	/**
+	* Custom 404 handler
+	* Function can be called for handling 404 errors
+	*/
+	public function notFound()
+	{
+		$self = $this;
+		$this->slim->notFound(function() use($self){
+			header("HTTP/1.0 404 Not Found");
+			$self->slim->render('404');
+		});
+	}
+
+	/**
 	* Helper function for date formatting
+	*
 	* @param $date Input date
 	* @param $format Date format
 	*/
@@ -235,6 +299,7 @@ class Textpress
 
 	/**
 	* Function to get full path of article file from its filename
+	*
 	* @param $path String File name
 	* @return String Path to file or false if file does not exists
 	*/
@@ -253,9 +318,10 @@ class Textpress
 	public function setRoutes()
 	{
 		$this->_routes = $this->slim->config('routes');
+		$self = $this; 
+		$prefix = $self->slim->config('prefix');
 		foreach ($this->_routes as $key => $value) {
-			$self = $this; 
-			$this->slim->map($value['route'],function() use($self,$key,$value){
+			$this->slim->map($prefix . $value['route'],function() use($self,$key,$value){
 				$args = func_get_args();
 				if(isset($value['layout']) && !$value['layout']){
 					$self->enableLayout = false;
@@ -263,17 +329,23 @@ class Textpress
 				else{
 					$self->setLayout();
 				}
+				
+				// load all articles
+				// This isn't necessary for route to an article though
+				// will help to generate tag cloud/ category listing
+				$self->loadArticles();
 
+				//set view data for article  and archives routes
 				if($key == '__root__' || $key == 'rss' || $key == 'atom'){
-					$self->loadArticles(10);
+					$self->allArticles = array_slice($self->allArticles, 0, 10);
 				}
-				elseif($key == 'article'){
-					$ext = $self->slim->config('file.extension');
-					$self->loadArticle($self->getPath($args),true);
+				elseif($key== 'article'){
+					$self->setArticle($self->getPath($args));
 				}
 				elseif($key =='archives'){
 					$self->loadArchives($args);
 				}
+				// render the template file
 				$self->render($value['template']);
 			})->via('GET')
 			  ->name($key)
@@ -290,24 +362,24 @@ class Textpress
 	*/
 	public function getPath($params)
 	{
-		$ext = $this->slim->config('file.extension');
-		return implode('-',$params) . $ext;
+		$slug = array_pop($params);
+		$date = implode('-', $params);
+		return $this->getArticleUrl($date,$slug);
 	}
 
 	/**
 	* Creates url from a Date and Title
-	* @param $date Date of article
-	* @param $title Article title
-	* 
-	* @todo Extend this function for custom urls
+	*
+	* @param string $date Date of article
+	* @param string $slug Article title
 	*/
-	public function getUrl($date,$slug)
+	public function getArticleUrl($date,$slug)
 	{
 		$date = new DateTime($date);
 		$date = $date->format('Y-m-d');
 		$dateSplit = explode('-', $date);
 		return $this->slim->urlFor(
-								'article',
+					 			'article',
 								array(
 									'year'=>$dateSplit[0],
 									'month'=>$dateSplit[1],
@@ -319,8 +391,8 @@ class Textpress
 
 	/**
 	* Slugize an article title
-	* @var String article title
-	* @return String slug
+	* @param string  $string  article title
+	* @return string URL slug corresponding to the string
 	*/
 	public function slugize($str)
 	{
@@ -357,16 +429,19 @@ class Textpress
 				'disqus.username' => $this->slim->config('disqus.username'),
 				'base.directory' => $this->slim->config('base.directory'),
 				'google.analytics' => $this->slim->config('google.analytics'),
+				'prefix' => $this->slim->config('prefix'),
 			);
 		$this->slim->view()->appendGlobalData($data);
 	}
 
 	/**
-	* Returns array of view data
+	* @return array view data
 	*/
-	public function viewData()
+	public function getViewData()
 	{
-		return $this->viewData;
+		return isset($this->viewData)
+					? $this->viewData
+					: array();
 	}
 
 	/**
@@ -379,15 +454,19 @@ class Textpress
 
 	/**
 	* Render template
+	*
+	* @param string $template template file to be rendered
 	*/
-	public function render($template){
-		$this->slim->render($template,$this->viewData());
+	public function render($template)
+	{
+		$this->slim->render($template,$this->getViewData());
 	}
 
 	/**
 	* Run slim
 	*/
-	public function run(){
+	public function run()
+	{
 		$this->slim->run();
 	}
 }

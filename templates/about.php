@@ -28,7 +28,7 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <h1><a class="brand" href="/">Me and <?Php echo $global['site.name'];?></a></h1>
+          <h1><a class="brand" href="<?Php echo $global['prefix'];?>/">Me and <?Php echo $global['site.name'];?></a></h1>
         </div>
       </div>
     </div>

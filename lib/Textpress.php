@@ -123,8 +123,9 @@ class Textpress
 	{
 		if (empty($this->fileNames))
 		{
-			$dir = new DirectoryIterator($this->_articlePath);
-			foreach($dir as $file){
+			$iterator = new DirectoryIterator($this->_articlePath);
+			$files = new RegexIterator($iterator,'/\\'.$this->slim->config('file.extension').'$/'); 
+			foreach($files as $file){
 				if($file->isFile()){
 					$this->fileNames[] = $file->getFilename();
 				}

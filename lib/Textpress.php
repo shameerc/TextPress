@@ -114,6 +114,17 @@ class Textpress
 		}
 		$this->setViewConfig();
 		$this->setRoutes();
+		$self = $this;
+		// work around for not found
+		// consider revising it
+		try{
+			$this->slim->notFound(function() use($self){
+				header("HTTP/1.0 404 Not Found");
+				$self->setLayout();
+				$self->slim->render('404');				
+			});
+		}
+		catch(Exception $e){}
 	}
 
 	/**
@@ -280,7 +291,6 @@ class Textpress
 	{
 		$self = $this;
 		$this->slim->notFound(function() use($self){
-			header("HTTP/1.0 404 Not Found");
 			$self->slim->render('404');
 		});
 	}

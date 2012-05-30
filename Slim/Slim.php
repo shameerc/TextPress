@@ -458,18 +458,18 @@ class Slim {
      * @return  void
      */
     public function notFound( $callable = null ) {
-        // if ( !is_null($callable) ) {
-        //     $this->router->notFound($callable);
-        // } 
-        ob_start();
-        $customNotFoundHandler = $this->router->notFound($callable);
-        if ( is_callable($customNotFoundHandler) ) {
-            call_user_func($customNotFoundHandler);
+        if ( !is_null($callable) ) {
+            $this->router->notFound($callable);
         } else {
-            call_user_func(array($this, 'defaultNotFound'));
+            ob_start();
+            $customNotFoundHandler = $this->router->notFound();
+            if ( is_callable($customNotFoundHandler) ) {
+                call_user_func($customNotFoundHandler);
+            } else {
+                call_user_func(array($this, 'defaultNotFound'));
+            }
+            $this->halt(404, ob_get_clean());
         }
-        $this->halt(404, ob_get_clean());
-        
     }
 
     /**

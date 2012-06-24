@@ -10,7 +10,7 @@ return array(
 	'file.extension' => '.txt',   // file extension of articles
 	'disqus.username' => '',   // Your disqus username or false (Global)
 	'markdown'		=> true, //Enable of disable markdown parsing. 
-	'path.directory'  => '',
+	'base.directory'  => '',
 	'prefix' => '',   // prefix to be added with all URLs. eg : '/blog'
 	'google.analytics' => false, // Google analytics code. set false to disable
 	// Define routes

@@ -9,7 +9,7 @@
       ?>
     </title>
     <meta name="description" content="">
-    <meta content='Authur Name' name='Author'/> 
+    <meta content='Authur Name' name='<?php echo $global['author.name']; ?>'/> 
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
@@ -19,9 +19,6 @@
     <!-- Le styles -->
     <link href="<?php echo $global['base.directory'];?>/assets/css/bootstrap.css" rel="stylesheet">
     <link href="<?php echo $global['base.directory'];?>/assets/css/main.css" rel="stylesheet">
-    <style type="text/css">
-      
-    </style>
 
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="images/favicon.ico">
@@ -48,11 +45,11 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <h1><a class="brand" href="<?Php echo $global['prefix'];?>/"><?Php echo $global['site.name'];?></a></h1>
+          <h1><a class="brand" href="<?php echo $global['prefix'];?>/"><?Php echo $global['site.name'];?></a></h1>
           <ul class="nav">
             <li><a href="https://github.com/shameerc/TextPress" target="_blank">Source</a>
-            <li><a href="<?Php echo $global['prefix'];?>/archives">Archives</a></li>
-            <li><a href="<?Php echo $global['prefix'];?>/about">About</a></li>
+            <li><a href="<?php echo $global['prefix'];?>/archives">Archives</a></li>
+            <li><a href="<?php echo $global['prefix'];?>/about">About</a></li>
           </ul>
         </div>
       </div>

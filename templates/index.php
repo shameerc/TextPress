@@ -5,6 +5,10 @@
 </section>
 <section id="articles">
 <?php
+if( count($articles) < 1 ){
+  echo "<h3>No articles found!</h3>";
+}
+else{
 	foreach($articles as $article){
 ?>
 	  <article class="post">
@@ -19,7 +23,8 @@
       <div class="more"><a href="<?php echo $article['url']; ?>">read on &raquo;</a></div>
       <br />
     </article>
-  <?php
-	}
-  ?>
+<?php
+  }
+}
+?>
 </section>

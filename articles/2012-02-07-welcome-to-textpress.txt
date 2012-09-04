@@ -19,6 +19,7 @@ TextPress is a simple, light weight blogging engine for PHP geeks, which can be 
 
 ##Requirements
 
+* PHP > 5.3
 * You should have Git installed, if using Git for publishing articles.
 * You should not hate using commands
 * Knowledge or willingness to learn HTML/Markdown

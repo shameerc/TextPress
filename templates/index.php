@@ -1,6 +1,6 @@
 <section class="hero-unit">
   <p>Download TextPress from GitHub</p>
-  <p class="small">TextPress is now Alpha</p>
+  <p class="small">TextPress is now Beta</p>
   <a href="https://github.com/shameerc/TextPress/tarball/master" class="btn btn-large btn-primary">Get TextPress</a>
 </section>
 <section id="articles">

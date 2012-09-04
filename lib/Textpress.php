@@ -88,6 +88,21 @@ class Textpress
 	public $slim;
 
 	/**
+	* Array of all categories in the blog
+	*
+	* @var array
+	*/
+	public $categories = array();
+
+	/**
+	* Array of all tags in the blog
+	* A tag is an object of class Tag with name and count attributes
+	*
+	* @var array
+	*/
+	public $tags = array();
+
+	/**
 	* Constructor
 	* 
 	* @param Slim $slim Object of slim
@@ -214,9 +229,17 @@ class Textpress
 			$prefix = $this->slim->config('prefix');
 			$url  	= $this->getArticleUrl($article['meta']['date'],$slug);
 			$allArticles[$url] = $article;
+			$this->collectCategories($article['meta']);
+			$this->collectTags($article['meta']);
 			$i++;
 		}
 		$this->allArticles = $allArticles;
+		$this->slim->view()->appendGlobalData(
+				array(
+					"categories" => $this->categories,
+					"tags" => $this->tags
+					)
+			);
 		return $this->viewData['articles'] = $this->sortArticles($allArticles);
 	}
 
@@ -446,6 +469,44 @@ class Textpress
 	}
 
 	/**
+	* Collects categories from all articles
+	* 
+	* @param string $meta Article meta data
+	* @return array of distinct categories
+	*/
+	public function collectCategories($meta)
+	{
+		if(array_key_exists('category', $meta) && $meta['category']){
+			$categories = explode(',', trim($meta['category'],','));
+			$this->categories = array_unique(array_merge($this->categories,$categories));
+		}
+		return $this->categories;
+	}
+
+	/**
+	* Collect tags from all articles to build tag cloud
+	* Each tag will be an object of Tag with name and count
+	* Use $tag->name and $tag->count to get the name and number of occurances of each tag
+	*
+	* @param string $meta Article meta data
+	* @return collection of Tag objects
+	*/
+	public function collectTags($meta){
+		if(array_key_exists('tag', $meta) && $meta['tag']){
+			$tags = explode(',', trim($meta['tag'],','));
+			foreach ($tags as $tag) {
+				if(isset($this->tags[$tag])){
+					$this->tags[$tag]->count++;
+				}
+				else{
+					$this->tags[$tag] = new Tag($tag);
+				}
+			}
+		}
+		return $this->tags;
+	}
+
+	/**
 	* @return array view data
 	*/
 	public function getViewData()
@@ -479,5 +540,28 @@ class Textpress
 	public function run()
 	{
 		$this->slim->run();
+	}
+}
+
+/**
+* Represents a Tag with name and count 
+*/
+class Tag{
+	/**
+	* tag name 
+	*
+	* @var string
+	*/
+	public $name;
+
+	/**
+	* number of occurances of a tag 
+	*
+	* @var int
+	*/
+	public $count;
+	public function __construct($name,$count=1){
+		$this->name = $name;
+		$this->count = $count;
 	}
 }

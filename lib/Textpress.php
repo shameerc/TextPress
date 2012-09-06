@@ -560,6 +560,13 @@ class Tag{
 	* @var int
 	*/
 	public $count;
+
+	/**
+	* Constructor 
+	* 
+	* @param string $name  Tag name
+	* @param int $count  Number of occurances of a tag
+	*/
 	public function __construct($name,$count=1){
 		$this->name = $name;
 		$this->count = $count;

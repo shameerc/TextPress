@@ -307,6 +307,25 @@ class Textpress
 	}
 
 	/**
+	*
+	* Filter list of articles based on the meta key-value
+	* Mainly used in categories and tags, but you can extend for other custom 
+	* meta keys also. Just add the routes and update routing function to include those routes
+	* 
+	* @param String $filter meta key to be searched in articles
+	* @param string $value value to be mached with
+	* @return array list of article matching the criteria
+	*/
+	public function filterArticles($filter,$value){
+		$articles = array();
+		foreach ($this->allArticles as $article) {
+			if(array_key_exists($filter, $article['meta']) && $value == $article['meta'][$filter])
+				$articles[] = $article;
+		}
+		return $this->viewData['articles'] = $articles;
+	}
+
+	/**
 	* Custom 404 handler
 	* Function can be called for handling 404 errors
 	*/
@@ -370,14 +389,23 @@ class Textpress
 				$self->loadArticles();
 
 				//set view data for article  and archives routes
-				if($key == '__root__' || $key == 'rss' || $key == 'atom'){
-					$self->allArticles = array_slice($self->allArticles, 0, 10);
-				}
-				elseif($key== 'article'){
-					$self->setArticle($self->getPath($args));
-				}
-				elseif($key =='archives'){
-					$self->loadArchives($args);
+
+				switch ($key) {
+					case '__root__' :
+					case 'rss'		:
+					case 'atom'		:
+						$self->allArticles = array_slice($self->allArticles, 0, 10);
+						break;
+					case 'article'	:
+						$self->setArticle($self->getPath($args));
+						break;
+					case 'archives' :
+						$self->loadArchives($args);
+						break;
+					case 'category'	:
+					case 'tag'		:
+						$self->filterArticles($key,$args[0]);
+						break;
 				}
 				// render the template file
 				$self->render($value['template']);

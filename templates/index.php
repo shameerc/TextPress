@@ -20,8 +20,17 @@ else{
       <section class="content">
         <?php echo substr(strip_tags($article['content']), 0,150); ?>...
       </section>
-      <div class="more"><a href="<?php echo $article['url']; ?>">read on &raquo;</a></div>
-      <br />
+      <div class="postmeta">
+        <div class="tags">
+        <?php
+        foreach ($article['meta']['tag'] as $key => $tag) {
+          echo '<span class="tag"><a href="/tag/' . $tag .'">' . ucfirst($tag) . "</a></span>";
+        }
+        ?>
+        </div>
+        <div class="more"><a href="<?php echo $article['url']; ?>">read on &raquo;</a></div>
+        <div class="clear"></div>
+      </div>
     </article>
 <?php
   }

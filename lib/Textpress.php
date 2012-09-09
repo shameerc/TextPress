@@ -185,6 +185,8 @@ class Textpress
 		$slug = (array_key_exists('slug', $meta) && $meta['slug'] !='') 
 					? $meta['slug']
 					: $this->slugize($meta['title']);
+		$meta['category'] = $this->collectCategories($meta);
+		$meta['tag'] = $this->collectTags($meta);
 		$article 	= array(
 						'meta' => $meta, 
 						'content' => $contents,
@@ -229,8 +231,6 @@ class Textpress
 			$prefix = $this->slim->config('prefix');
 			$url  	= $this->getArticleUrl($article['meta']['date'],$slug);
 			$allArticles[$url] = $article;
-			$this->collectCategories($article['meta']);
-			$this->collectTags($article['meta']);
 			$i++;
 		}
 		$this->allArticles = $allArticles;
@@ -319,7 +319,7 @@ class Textpress
 	public function filterArticles($filter,$value){
 		$articles = array();
 		foreach ($this->allArticles as $article) {
-			if(array_key_exists($filter, $article['meta']) && $value == $article['meta'][$filter])
+			if(array_key_exists($filter, $article['meta']) && in_array($value, $article['meta'][$filter]))
 				$articles[] = $article;
 		}
 		return $this->viewData['articles'] = $articles;
@@ -504,11 +504,13 @@ class Textpress
 	*/
 	public function collectCategories($meta)
 	{
+		$categories = array();
 		if(array_key_exists('category', $meta) && $meta['category']){
-			$categories = explode(',', trim($meta['category'],','));
+			$categories = explode(',', $meta['category']);
+			$categories = array_map("trim",$categories);
 			$this->categories = array_unique(array_merge($this->categories,$categories));
 		}
-		return $this->categories;
+		return $categories;
 	}
 
 	/**
@@ -520,8 +522,10 @@ class Textpress
 	* @return collection of Tag objects
 	*/
 	public function collectTags($meta){
+		$tags = array();
 		if(array_key_exists('tag', $meta) && $meta['tag']){
-			$tags = explode(',', trim($meta['tag'],','));
+			$tags = explode(',', $meta['tag']);
+			$tags = array_map("trim",$tags);
 			foreach ($tags as $tag) {
 				if(isset($this->tags[$tag])){
 					$this->tags[$tag]->count++;
@@ -531,7 +535,7 @@ class Textpress
 				}
 			}
 		}
-		return $this->tags;
+		return $tags;
 	}
 
 	/**

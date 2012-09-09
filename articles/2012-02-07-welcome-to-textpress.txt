@@ -3,7 +3,8 @@
  "date" : "07-02-2012",
  "slug" : "welcome-to-textpress",
  "author" : "Admin",
- "tag" : "intro, TextPress"
+ "tag" : "intro, TextPress",
+ "category":"TextPress"
 }
 
 TextPress is a simple, light weight blogging engine for PHP geeks, which can be hosted in PHP clouds like PHP Fog, Pagodabox, Orchestra.io, etc (though you can use traditional hosting to host TextPress, it is less preferred). It is inspired from [toto](http://cloudhead.io/toto), a flat-file blog engine in Ruby. TextPress is built on top of [Slim](http://www.slimframework.com/), a light weight php framework. It uses Git, the most popular version control system, for publishing articles. Articles can be written in markdown or html syntax. 

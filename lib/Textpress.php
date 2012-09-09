@@ -389,7 +389,6 @@ class Textpress
 				$self->loadArticles();
 
 				//set view data for article  and archives routes
-
 				switch ($key) {
 					case '__root__' :
 					case 'rss'		:

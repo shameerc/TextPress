@@ -88,14 +88,6 @@ h1, h2, h3, h4 {
   margin: 0;
   font-weight: bold;
 }
-ul, li {
-  list-style-type: disc;
-  font-size: 20px;
-  line-height: 30px;
-}
-ul ul li, ol ul{
-  list-style-type: circle;
-}
 code {
   font-family: 'Anonymous Pro', 'Bitstream Vera Sans', 'Monaco', Courier, mono;
 }
@@ -219,4 +211,7 @@ html, body {
 }
 .postmeta .more{
   float: right;
+}
+.dropdown-menu a {
+  font-size: 16px;
 }

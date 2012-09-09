@@ -25,6 +25,8 @@
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
     <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    <script src="/assets/js/jquery.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
     <?php if($global['google.analytics']){?>
     <script type="text/javascript">
       var _gaq = _gaq || [];
@@ -36,6 +38,9 @@
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
+      $(function(){
+        $('.dropdown-toggle').dropdown()  
+      })
   </script>
   <?php }?>
   </head>
@@ -47,16 +52,24 @@
         <div class="container">
           <h1><a class="brand" href="<?php echo $global['prefix'];?>/"><?Php echo $global['site.name'];?></a></h1>
           <ul class="nav">
-            <li><a href="https://github.com/shameerc/TextPress" target="_blank">Source</a>
+            <li class="dropdown">
+              <a class="dropdown-toggle" id="drop5" role="button" data-toggle="dropdown" href="#">Categories <b class="caret"></b></b></a>
+              <ul id="menu3" class="dropdown-menu" role="menu" aria-labelledby="drop5">
+                <?php
+                  foreach ($global['categories'] as $category) {
+                    echo '<li><a tabindex="-1" href="/category/'.$category.'">'.ucfirst($category).'</a></li>';
+                  }
+                ?>
+              </ul>
+            </li>
             <li><a href="<?php echo $global['prefix'];?>/archives">Archives</a></li>
+            <li><a href="https://github.com/shameerc/TextPress" target="_blank">Source</a>
             <li><a href="<?php echo $global['prefix'];?>/about">About</a></li>
           </ul>
         </div>
       </div>
     </div>
-
     <div class="container">
-
       <div class="content">
         <div class="row">
           <div class="span13">
@@ -69,5 +82,6 @@
         <p>Powered by TextPress &copy; <a href="http://shameerc.com" target="_blank">Shameer C </a>2012</p>
       </footer>
     </div> <!-- /container -->
+    
   </body>
 </html>

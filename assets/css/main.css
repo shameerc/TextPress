@@ -30,6 +30,9 @@ header, footer, section, article {
   line-height: 43px;
   margin-right: 30px;
 }
+ul li{
+  line-height: 30px;
+}
 a {
   color: #b83000;
 }

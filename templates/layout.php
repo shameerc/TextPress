@@ -56,8 +56,8 @@
               <a class="dropdown-toggle" id="drop5" role="button" data-toggle="dropdown" href="#">Categories <b class="caret"></b></b></a>
               <ul id="menu3" class="dropdown-menu" role="menu" aria-labelledby="drop5">
                 <?php
-                  foreach ($global['categories'] as $category) {
-                    echo '<li><a tabindex="-1" href="/category/'.$category.'">'.ucfirst($category).'</a></li>';
+                  foreach ($global['categories'] as $slug => $category) {
+                    echo '<li><a tabindex="-1" href="/category/'.$slug.'">'. $category .'</a></li>';
                   }
                 ?>
               </ul>
@@ -73,7 +73,7 @@
       <div class="content">
         <div class="row">
           <div class="span13">
-            <?php echo $content; ?>
+            <?php echo $content;?>
           </div>
         </div>
       </div>

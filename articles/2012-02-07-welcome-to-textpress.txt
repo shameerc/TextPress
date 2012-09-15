@@ -3,7 +3,7 @@
  "date" : "07-02-2012",
  "slug" : "welcome-to-textpress",
  "author" : "Admin",
- "tag" : "intro, TextPress",
+ "tag" : "Intro, TextPress",
  "category":"TextPress"
 }
 

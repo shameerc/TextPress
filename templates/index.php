@@ -23,8 +23,8 @@ else{
       <div class="postmeta">
         <div class="tags">
         <?php
-        foreach ($article['meta']['tag'] as $key => $tag) {
-          echo '<span class="tag"><a href="/tag/' . $tag .'">' . ucfirst($tag) . "</a></span>";
+        foreach ($article['meta']['tag'] as $slug => $tag) {
+          echo '<span class="tag"><a href="/tag/' . $slug .'">' . $tag->name . "</a></span>";
         }
         ?>
         </div>

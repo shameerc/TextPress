@@ -319,7 +319,7 @@ class Textpress
 	public function filterArticles($filter,$value){
 		$articles = array();
 		foreach ($this->allArticles as $article) {
-			if(array_key_exists($filter, $article['meta']) && in_array($value, $article['meta'][$filter]))
+			if(array_key_exists($filter, $article['meta']) && array_key_exists($value, $article['meta'][$filter]))
 				$articles[] = $article;
 		}
 		return $this->viewData['articles'] = $articles;
@@ -503,13 +503,16 @@ class Textpress
 	*/
 	public function collectCategories($meta)
 	{
-		$categories = array();
+		$temp = array();
 		if(array_key_exists('category', $meta) && $meta['category']){
 			$categories = explode(',', $meta['category']);
-			$categories = array_map("trim",$categories);
-			$this->categories = array_unique(array_merge($this->categories,$categories));
+			foreach ($categories as  $category) {
+				$slug = $this->slugize($category);
+				$temp[$slug] = trim($category);
+			}
+			$this->categories = array_merge($this->categories,$temp);
 		}
-		return $categories;
+		return $temp;
 	}
 
 	/**
@@ -520,21 +523,24 @@ class Textpress
 	* @param string $meta Article meta data
 	* @return collection of Tag objects
 	*/
-	public function collectTags($meta){
-		$tags = array();
+	public function collectTags($meta)
+	{
+		$temp = array();
 		if(array_key_exists('tag', $meta) && $meta['tag']){
 			$tags = explode(',', $meta['tag']);
-			$tags = array_map("trim",$tags);
 			foreach ($tags as $tag) {
-				if(isset($this->tags[$tag])){
-					$this->tags[$tag]->count++;
+				$slug = $this->slugize($tag);
+				if(isset($this->tags[$slug])){
+					$temp[$slug] = $this->tags[$slug];
+					$temp[$slug]->count++;
 				}
 				else{
-					$this->tags[$tag] = new Tag($tag);
+					$temp[$slug] = new Tag(trim($tag));
 				}
 			}
+			$this->tags = array_merge($this->tags,$temp);
 		}
-		return $tags;
+		return $temp;
 	}
 
 	/**

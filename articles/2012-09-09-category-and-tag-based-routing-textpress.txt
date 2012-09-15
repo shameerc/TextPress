@@ -2,8 +2,9 @@
 "title" : "New features : Categories and Tag cloud",
 "author":"Slim",
 "date":"09-09-2012",
-"tag":"feature",
-"slug" : "category-and-tag-based-routing-textpress"
+"tag":"Feature,TextPress",
+"slug" : "category-and-tag-based-routing-textpress",
+"category" : "TextPress"
 }
 
 From now onwards you can have Tag or Category based routes for TextPress, which are available by default. You can see two new routes config/config.php

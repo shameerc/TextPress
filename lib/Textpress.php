@@ -387,7 +387,7 @@ class Textpress
 				// This isn't necessary for route to an article though
 				// will help to generate tag cloud/ category listing
 				$self->loadArticles();
-
+				$self->slim->view()->appendGlobalData(array("route" => $key));
 				//set view data for article  and archives routes
 				switch ($key) {
 					case '__root__' :
@@ -583,7 +583,8 @@ class Textpress
 /**
 * Represents a Tag with name and count 
 */
-class Tag{
+class Tag
+{
 	/**
 	* tag name 
 	*
@@ -604,7 +605,8 @@ class Tag{
 	* @param string $name  Tag name
 	* @param int $count  Number of occurances of a tag
 	*/
-	public function __construct($name,$count=1){
+	public function __construct($name,$count=1)
+	{
 		$this->name = $name;
 		$this->count = $count;
 	}

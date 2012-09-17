@@ -44,15 +44,13 @@
   </script>
   <?php }?>
   </head>
-
   <body>
-
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <h1><a class="brand" href="<?php echo $global['prefix'];?>/"><?Php echo $global['site.name'];?></a></h1>
+          <h1><a class="brand" href="<?php echo $global['prefix'];?>/"><?php echo $global['site.name'];?></a></h1>
           <ul class="nav">
-            <li class="dropdown">
+            <li class="dropdown <?php if($global["route"] == "category") echo "active";?>">
               <a class="dropdown-toggle" id="drop5" role="button" data-toggle="dropdown" href="#">Categories <b class="caret"></b></b></a>
               <ul id="menu3" class="dropdown-menu" role="menu" aria-labelledby="drop5">
                 <?php
@@ -62,9 +60,9 @@
                 ?>
               </ul>
             </li>
-            <li><a href="<?php echo $global['prefix'];?>/archives">Archives</a></li>
+            <li class="<?php if($global["route"] == "archives") echo "active";?>"><a href="<?php echo $global['prefix'];?>/archives">Archives</a></li>
             <li><a href="https://github.com/shameerc/TextPress" target="_blank">Source</a>
-            <li><a href="<?php echo $global['prefix'];?>/about">About</a></li>
+            <li class="<?php if($global["route"] == "about") echo "active";?>"><a href="<?php echo $global['prefix'];?>/about">About</a></li>
           </ul>
         </div>
       </div>

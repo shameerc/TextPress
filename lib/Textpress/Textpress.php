@@ -108,7 +108,7 @@ class Textpress
 	* 
 	* @param Slim $slim Object of slim
 	*/
-	public function __construct(Slim\Slim $slim)
+	public function __construct(\Slim\Slim $slim)
 	{
 		$this->slim = $slim;
 		$this->init();
@@ -126,7 +126,7 @@ class Textpress
 		$this->markdown 	= $this->slim->config('markdown');
 		$this->_articlePath = $this->slim->config('article.path');
 		if($this->markdown){
-			require_once __DIR__ . '/markdown.php';
+			require_once __DIR__ . '/../markdown.php';
 		}
 		$this->setViewConfig();
 		$this->setRoutes();
@@ -150,8 +150,8 @@ class Textpress
 	{
 		if (empty($this->fileNames))
 		{
-			$iterator = new DirectoryIterator($this->_articlePath);
-			$files = new RegexIterator($iterator,'/\\'.$this->slim->config('file.extension').'$/'); 
+			$iterator = new \DirectoryIterator($this->_articlePath);
+			$files = new \RegexIterator($iterator,'/\\'.$this->slim->config('file.extension').'$/'); 
 			foreach($files as $file){
 				if($file->isFile()){
 					$this->fileNames[] = $file->getFilename();
@@ -347,7 +347,7 @@ class Textpress
 	public function dateFormat($date,$format=null)
 	{
 		$format = is_null($format) ? $this->slim->config('date.format') : $format;
-		$date  = new DateTime($date);
+		$date  = new \DateTime($date);
 		return $date->format($format);	
 	}
 
@@ -394,7 +394,7 @@ class Textpress
 					case '__root__' :
 					case 'rss'		:
 					case 'atom'		:
-						$self->viewData['articles'] = array_slice($self->allArticles, 0, 10);
+						$self->allArticles = array_slice($self->allArticles, 0, 10);
 						break;
 					case 'article'	:
 						$self->setArticle($self->getPath($args));
@@ -437,7 +437,7 @@ class Textpress
 	*/
 	public function getArticleUrl($date,$slug)
 	{
-		$date = new DateTime($date);
+		$date = new \DateTime($date);
 		$date = $date->format('Y-m-d');
 		$dateSplit = explode('-', $date);
 		return $this->slim->urlFor(

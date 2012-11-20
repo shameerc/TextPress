@@ -58,7 +58,7 @@ class View extends \Slim\View
 		extract(array('content' => $content, 'global' => $this->global));
 		if($this->layout){
 			$layoutPath = $this->getTemplatesDirectory() . '/' . ltrim($this->layout, '/');
-			if ( !file_exists($layoutPath) ) {
+			if ( !is_readable($layoutPath) ) {
             	throw new RuntimeException('View cannot render layout `' . $layoutPath );
         	}
 	        require $layoutPath;
@@ -66,7 +66,7 @@ class View extends \Slim\View
 		else{
 			echo $content;
 		} 
-        return ob_get_clean();//echo "render"; 
+        return ob_get_clean();
 	}	
 
 }

@@ -176,9 +176,9 @@ class Textpress
 		}
 		$handle 	= fopen($fullPath, 'r');
 		$content 	= stream_get_contents($handle);
-		$sections 	= explode("\n\n", $content);
+		$sections 	= explode(PHP_EOL . PHP_EOL, $content);
 		$meta 		= json_decode(array_shift($sections),true);
-		$contents 	= implode("\n\n",$sections);
+		$contents 	= implode(PHP_EOL . PHP_EOL,$sections);
 		if($this->markdown){ 
 			$contents = Markdown($contents);
 		}

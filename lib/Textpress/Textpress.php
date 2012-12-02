@@ -252,8 +252,10 @@ class Textpress
 	{
 		$results	= array();
 		foreach($articles as $article){
-			$date = $this->dateFormat($article['meta']['date'],'Y-m-d');
-			$results[$date] = $article;
+			$date = new \DateTime($article['meta']['date']);
+			$timestamp = $date->getTimestamp();
+			$timestamp = array_key_exists($timestamp, $results) ? $timestamp + 1 : $timestamp;
+			$results[$timestamp] = $article;
 		}
 		krsort($results);
 		return $results;

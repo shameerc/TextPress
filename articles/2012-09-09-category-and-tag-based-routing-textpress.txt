@@ -1,0 +1,27 @@
+{
+"title" : "New features : Categories and Tag cloud",
+"author":"Slim",
+"date":"09-09-2012",
+"tag":"Feature,TextPress",
+"slug" : "category-and-tag-based-routing-textpress",
+"category" : "TextPress"
+}
+
+From now onwards you can have Tag or Category based routes for TextPress, which are available by default. You can see two new routes config/config.php
+~~~
+'category' => array(
+		'route' => '/category/:category',
+		'template' => 'index'
+	),
+'tag' => array(
+		'route' => '/tag/:tag',
+		'template' => 'index'
+	),
+~~~
+
+In order to use this feature, make sure you have <code>tag</code> or <code>category</code> key in meta part of the article. Multiple tags can be seperated by comas. Inside a template, tag or category can be accessed using <code>$article['meta']['tag']</code> or <code>$article['meta']['category']</code>. 
+
+### Creating a tag cloud
+Its really easy to create a tag cloud in your blog. You can build a tag cloud using <code>$gloabal['tags']</code> global array in layout. This variable is an array or Tag objects. A Tag object will have a name and number or occurances in the blog, which can be accessed using <code>$tag->name</code> and <code>$tag->count</code> respectively.
+
+Likewise a list of all categories in the blog can be created using <code>$global['categories']</code> array.

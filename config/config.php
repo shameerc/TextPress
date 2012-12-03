@@ -30,6 +30,14 @@ return array(
 										,'date'=>'([1-9]|[0-3][0-9])'
 										)
 				),
+			'category' => array(
+					'route' => '/category/:category',
+					'template' => 'index'
+				),
+			'tag' => array(
+					'route' => '/tag/:tag',
+					'template' => 'index'
+				),
 			'archives' => array(
 					'route' => '/archives(/:year(/:month(/:date)))',
 					'template' => 'archives',

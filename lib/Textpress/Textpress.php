@@ -7,7 +7,6 @@
  * @author 		Shameer C <me@shameerc.com>
  * @copyright   2012 - Shameer C
  * @version 	Beta
- * @todo        Add some error and exception handling
  *
  * MIT LICENSE
  *
@@ -30,7 +29,8 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
+ 
+namespace Textpress;
 /**
 * Textpress
 * @author 		Shameer
@@ -88,11 +88,26 @@ class Textpress
 	public $slim;
 
 	/**
+	* Array of all categories in the blog
+	*
+	* @var array
+	*/
+	public $categories = array();
+
+	/**
+	* Array of all tags in the blog
+	* A tag is an object of class Tag with name and count attributes
+	*
+	* @var array
+	*/
+	public $tags = array();
+
+	/**
 	* Constructor
 	* 
 	* @param Slim $slim Object of slim
 	*/
-	public function __construct(Slim $slim)
+	public function __construct(\Slim\Slim $slim)
 	{
 		$this->slim = $slim;
 		$this->init();
@@ -110,7 +125,7 @@ class Textpress
 		$this->markdown 	= $this->slim->config('markdown');
 		$this->_articlePath = $this->slim->config('article.path');
 		if($this->markdown){
-			require_once __DIR__ . '/markdown.php';
+			require_once __DIR__ . '/../markdown.php';
 		}
 		$this->setViewConfig();
 		$this->setRoutes();
@@ -134,8 +149,8 @@ class Textpress
 	{
 		if (empty($this->fileNames))
 		{
-			$iterator = new DirectoryIterator($this->_articlePath);
-			$files = new RegexIterator($iterator,'/\\'.$this->slim->config('file.extension').'$/'); 
+			$iterator = new \DirectoryIterator($this->_articlePath);
+			$files = new \RegexIterator($iterator,'/\\'.$this->slim->config('file.extension').'$/'); 
 			foreach($files as $file){
 				if($file->isFile()){
 					$this->fileNames[] = $file->getFilename();
@@ -161,6 +176,11 @@ class Textpress
 		}
 		$handle 	= fopen($fullPath, 'r');
 		$content 	= stream_get_contents($handle);
+		// hack for cross platform newline char issue. (by http://darklaunch.com/)
+		$content 	= str_replace("\r\n", "\n", $content);
+		$content 	= str_replace("\r", "\n", $content);
+		// Don't allow out-of-control blank lines
+		$content 	= preg_replace("/\n{2,}/", "\n\n", $content);
 		$sections 	= explode("\n\n", $content);
 		$meta 		= json_decode(array_shift($sections),true);
 		$contents 	= implode("\n\n",$sections);
@@ -170,6 +190,8 @@ class Textpress
 		$slug = (array_key_exists('slug', $meta) && $meta['slug'] !='') 
 					? $meta['slug']
 					: $this->slugize($meta['title']);
+		$meta['category'] = $this->collectCategories($meta);
+		$meta['tag'] = $this->collectTags($meta);
 		$article 	= array(
 						'meta' => $meta, 
 						'content' => $contents,
@@ -217,6 +239,12 @@ class Textpress
 			$i++;
 		}
 		$this->allArticles = $allArticles;
+		$this->slim->view()->appendGlobalData(
+				array(
+					"categories" => $this->categories,
+					"tags" => $this->tags
+					)
+			);
 		return $this->viewData['articles'] = $this->sortArticles($allArticles);
 	}
 
@@ -229,8 +257,10 @@ class Textpress
 	{
 		$results	= array();
 		foreach($articles as $article){
-			$date = $this->dateFormat($article['meta']['date'],'Y-m-d');
-			$results[$date] = $article;
+			$date = new \DateTime($article['meta']['date']);
+			$timestamp = $date->getTimestamp();
+			$timestamp = array_key_exists($timestamp, $results) ? $timestamp + 1 : $timestamp;
+			$results[$timestamp] = $article;
 		}
 		krsort($results);
 		return $results;
@@ -284,6 +314,25 @@ class Textpress
 	}
 
 	/**
+	*
+	* Filter list of articles based on the meta key-value
+	* Mainly used in categories and tags, but you can extend for other custom 
+	* meta keys also. Just add the routes and update routing function to include those routes
+	* 
+	* @param String $filter meta key to be searched in articles
+	* @param string $value value to be mached with
+	* @return array list of article matching the criteria
+	*/
+	public function filterArticles($filter,$value){
+		$articles = array();
+		foreach ($this->allArticles as $article) {
+			if(array_key_exists($filter, $article['meta']) && array_key_exists($value, $article['meta'][$filter]))
+				$articles[] = $article;
+		}
+		return $this->viewData['articles'] = $articles;
+	}
+
+	/**
 	* Custom 404 handler
 	* Function can be called for handling 404 errors
 	*/
@@ -304,7 +353,7 @@ class Textpress
 	public function dateFormat($date,$format=null)
 	{
 		$format = is_null($format) ? $this->slim->config('date.format') : $format;
-		$date  = new DateTime($date);
+		$date  = new \DateTime($date);
 		return $date->format($format);	
 	}
 
@@ -345,16 +394,24 @@ class Textpress
 				// This isn't necessary for route to an article though
 				// will help to generate tag cloud/ category listing
 				$self->loadArticles();
-
+				$self->slim->view()->appendGlobalData(array("route" => $key));
 				//set view data for article  and archives routes
-				if($key == '__root__' || $key == 'rss' || $key == 'atom'){
-					$self->allArticles = array_slice($self->allArticles, 0, 10);
-				}
-				elseif($key== 'article'){
-					$self->setArticle($self->getPath($args));
-				}
-				elseif($key =='archives'){
-					$self->loadArchives($args);
+				switch ($key) {
+					case '__root__' :
+					case 'rss'		:
+					case 'atom'		:
+						$self->allArticles = array_slice($self->allArticles, 0, 10);
+						break;
+					case 'article'	:
+						$self->setArticle($self->getPath($args));
+						break;
+					case 'archives' :
+						$self->loadArchives($args);
+						break;
+					case 'category'	:
+					case 'tag'		:
+						$self->filterArticles($key,$args[0]);
+						break;
 				}
 				// render the template file
 				$self->render($value['template']);
@@ -386,7 +443,7 @@ class Textpress
 	*/
 	public function getArticleUrl($date,$slug)
 	{
-		$date = new DateTime($date);
+		$date = new \DateTime($date);
 		$date = $date->format('Y-m-d');
 		$dateSplit = explode('-', $date);
 		return $this->slim->urlFor(
@@ -446,6 +503,54 @@ class Textpress
 	}
 
 	/**
+	* Collects categories from all articles
+	* 
+	* @param string $meta Article meta data
+	* @return array of distinct categories
+	*/
+	public function collectCategories($meta)
+	{
+		$temp = array();
+		if(array_key_exists('category', $meta) && $meta['category']){
+			$categories = explode(',', $meta['category']);
+			foreach ($categories as  $category) {
+				$slug = $this->slugize($category);
+				$temp[$slug] = trim($category);
+			}
+			$this->categories = array_merge($this->categories,$temp);
+		}
+		return $temp;
+	}
+
+	/**
+	* Collect tags from all articles to build tag cloud
+	* Each tag will be an object of Tag with name and count
+	* Use $tag->name and $tag->count to get the name and number of occurances of each tag
+	*
+	* @param string $meta Article meta data
+	* @return collection of Tag objects
+	*/
+	public function collectTags($meta)
+	{
+		$temp = array();
+		if(array_key_exists('tag', $meta) && $meta['tag']){
+			$tags = explode(',', $meta['tag']);
+			foreach ($tags as $tag) {
+				$slug = $this->slugize($tag);
+				if(isset($this->tags[$slug])){
+					$temp[$slug] = $this->tags[$slug];
+					$temp[$slug]->count++;
+				}
+				else{
+					$temp[$slug] = new Tag(trim($tag));
+				}
+			}
+			$this->tags = array_merge($this->tags,$temp);
+		}
+		return $temp;
+	}
+
+	/**
 	* @return array view data
 	*/
 	public function getViewData()
@@ -479,5 +584,37 @@ class Textpress
 	public function run()
 	{
 		$this->slim->run();
+	}
+}
+
+/**
+* Represents a Tag with name and count 
+*/
+class Tag
+{
+	/**
+	* tag name 
+	*
+	* @var string
+	*/
+	public $name;
+
+	/**
+	* number of occurances of a tag 
+	*
+	* @var int
+	*/
+	public $count;
+
+	/**
+	* Constructor 
+	* 
+	* @param string $name  Tag name
+	* @param int $count  Number of occurances of a tag
+	*/
+	public function __construct($name,$count=1)
+	{
+		$this->name = $name;
+		$this->count = $count;
 	}
 }

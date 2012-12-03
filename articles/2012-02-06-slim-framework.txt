@@ -1,7 +1,9 @@
 {
-	"title" : "Slim Framework",
-  "author":"Slim",
-	"date":"06-02-2012"
+"title" : "Slim Framework",
+"author":"Slim",
+"date":"06-02-2012",
+"tag":"Slim",
+"category":"Framework"
 }
 
 Slim Framework is a micro framework for PHP 5 inspired by [Sinatra](http://sinatrarb.com) released under the MIT public license.

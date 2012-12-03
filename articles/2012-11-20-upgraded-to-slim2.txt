@@ -1,0 +1,11 @@
+{
+"title" : "Upgraded to Slim framework 2",
+"author":"Shameer",
+"date":"20-11-2012",
+"tag":"Slim,news",
+"category":"News"
+}
+
+I've recently pushed some changes to TextPress, which includes upgradation to Slim framework 2. This version of framework got many new features such as PHP namespaces, PSR-2 compliance and so on. Please take a look at the [Release notes](http://slimframework.com/news/version-2) to know more about this. This is still in [development branch](https://github.com/shameerc/TextPress/tree/development), which I will be merging to master very soon.
+
+Going forward, I would like to add two important features to TextPress - caching and search support. Any suggestion, thoughts from your side will be greatly appreciated :)

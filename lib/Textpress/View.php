@@ -1,10 +1,11 @@
 <?php
 /**
-* View class for Geekpress
+* View class for Textpress
 */
-require_once dirname(dirname(__FILE__)) .'/Slim/View.php';
 
-class View extends Slim_View
+namespace Textpress;
+
+class View extends \Slim\View
 {
 	/**
 	* @var  String layout file
@@ -57,7 +58,7 @@ class View extends Slim_View
 		extract(array('content' => $content, 'global' => $this->global));
 		if($this->layout){
 			$layoutPath = $this->getTemplatesDirectory() . '/' . ltrim($this->layout, '/');
-			if ( !file_exists($layoutPath) ) {
+			if ( !is_readable($layoutPath) ) {
             	throw new RuntimeException('View cannot render layout `' . $layoutPath );
         	}
 	        require $layoutPath;
@@ -65,7 +66,7 @@ class View extends Slim_View
 		else{
 			echo $content;
 		} 
-        return ob_get_clean();//echo "render"; 
+        return ob_get_clean();
 	}	
 
 }

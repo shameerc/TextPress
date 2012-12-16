@@ -9,6 +9,8 @@ return array(
 	'layout.file' => 'layout',    // Site layout file
 	'file.extension' => '.txt',   // file extension of articles
 	'disqus.username' => '',   // Your disqus username or false (Global)
+	'facebook.appid' => '',   // Facebook app id or false...for comments
+	'facebook.postcount' => '',   // How many posts
 	'markdown'		=> true, //Enable of disable markdown parsing. 
 	'base.directory'  => '',
 	'prefix' => '',   // prefix to be added with all URLs. eg : '/blog'

@@ -8,6 +8,11 @@
     <?php echo $article['content']; ?>
   </section>
   <section class="comments">
+  
+    <?php if($global['facebook.appid']){?>
+      <div class="fb-comments" data-href="<?php echo $article['url']?>" data-width="470" data-num-posts="<?php echo $global['facebook.postcount']?>"></div>
+    <?php }?>
+  
     <?php if($global['disqus.username']){?>
       <div id="disqus_thread"></div>
       <script type="text/javascript" src="http://disqus.com/forums/<?php echo $global['disqus.username']; ?>/embed.js"> </script>

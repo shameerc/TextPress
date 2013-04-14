@@ -18,6 +18,7 @@
 
     <!-- Le styles -->
     <link href="<?php echo $global['theme.base'];?>/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo $global['theme.base'];?>/assets/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="<?php echo $global['theme.base'];?>/assets/css/main.css" rel="stylesheet">
 
     <!-- Le fav and touch icons -->

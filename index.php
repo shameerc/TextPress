@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', true);
+error_reporting(E_ALL);
 /**
 * Require Slim and register Slim autoloader
 */
@@ -21,12 +23,11 @@ require 'lib/Textpress/View.php';
 */
 
 $app = new \Slim\Slim(array('view' => new \Textpress\View(),'mode' => 'production'));
-$app->config($config);
 
 /**
 * Create an object of Textpress and pass the object of Slim to it.
 */
-$textpress = new \Textpress\Textpress($app);
+$textpress = new \Textpress\Textpress($app, $config);
 
 /**
 * Finally run Textpress

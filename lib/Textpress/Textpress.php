@@ -174,7 +174,7 @@ class Textpress
         try{
             $this->slim->notFound(function() use($self){
                 header("HTTP/1.0 404 Not Found");
-                $self->setLayout();
+                $self->setLayout(true);
                 $self->slim->render('404');             
             });
         }
@@ -422,11 +422,12 @@ class Textpress
         foreach ($this->_routes as $key => $value) {
             $this->slim->map($prefix . $value['route'],function() use($self,$key,$value){
                 $args = func_get_args();
-                if(isset($value['layout']) && !$value['layout']){
+                $layout = isset($value['layout']) ? $value['layout'] : true;
+                if(!$layout){
                     $self->enableLayout = false;
                 }
                 else{
-                    $self->setLayout();
+                    $self->setLayout($layout);
                 }
                 
                 // load all articles
@@ -605,9 +606,11 @@ class Textpress
     /**
     * Set layout file
     */
-    public function setLayout()
+    public function setLayout($layout)
     {
-        $this->slim->view()->setLayout($this->config('layout.file') . '.php');
+        $layoutFile = is_bool($layout) ? $this->slim->config('layout.file') . '.php'
+                                       : $layout . ".php";
+        $this->slim->view()->setLayout($layoutFile);
     }
 
     /**

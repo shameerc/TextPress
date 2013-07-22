@@ -241,7 +241,7 @@ class Textpress
         }
         $article = $this->allArticles[$url];
         $this->slim->view()->appendGlobalData($article['meta']); 
-        $this->viewData['article'] = $article;
+        return $this->viewData['article'] = $article;
     }
 
     /**
@@ -421,6 +421,7 @@ class Textpress
                 }
 
                 $self->slim->view()->appendGlobalData(array("route" => $key));
+                $template = $value['template'];
                 //set view data for article  and archives routes
                 switch ($key) {
                     case '__root__' :
@@ -429,7 +430,10 @@ class Textpress
                         $self->allArticles = array_slice($self->allArticles, 0, 10);
                         break;
                     case 'article'  :
-                        $self->setArticle($self->getPath($args));
+                        $article = $self->setArticle($self->getPath($args));
+                        $template = (isset($article['meta']['template']) && $article['meta']['template'] !="")
+                                        ? $article['meta']['template']
+                                        : $template;
                         break;
                     case 'archives' :
                         $self->loadArchives($args);
@@ -440,7 +444,7 @@ class Textpress
                         break;
                 }
                 // render the template file
-                $self->render($value['template']);
+                $self->render($template);
             })->via('GET')
               ->name($key)
               ->conditions(

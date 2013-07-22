@@ -6,7 +6,7 @@
  * 
  * @author      Shameer C <me@shameerc.com>
  * @copyright   2012 - Shameer C
- * @version     1.1
+ * @version     1.0
  *
  * MIT LICENSE
  *

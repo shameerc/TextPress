@@ -6,7 +6,7 @@
  * 
  * @author      Shameer C <me@shameerc.com>
  * @copyright   2012 - Shameer C
- * @version     1.0
+ * @version     1.1
  *
  * MIT LICENSE
  *
@@ -34,7 +34,7 @@ namespace Textpress;
 /**
 * Textpress
 * @author       Shameer
-* @since        Alpha 
+* @since        1.0 
 */
 class Textpress
 {
@@ -169,16 +169,6 @@ class Textpress
         $this->setViewConfig();
         $this->setRoutes();
         $self = $this;
-        // work around for not found
-        // consider revising it
-        try{
-            $this->slim->notFound(function() use($self){
-                header("HTTP/1.0 404 Not Found");
-                $self->setLayout(true);
-                $self->slim->render('404');             
-            });
-        }
-        catch(Exception $e){}
     }
 
     /**
@@ -429,11 +419,7 @@ class Textpress
                 else{
                     $self->setLayout($layout);
                 }
-                
-                // load all articles
-                // This isn't necessary for route to an article though
-                // will help to generate tag cloud/ category listing
-                $self->loadArticles();
+
                 $self->slim->view()->appendGlobalData(array("route" => $key));
                 //set view data for article  and archives routes
                 switch ($key) {
@@ -461,6 +447,14 @@ class Textpress
                 isset($value['conditions']) ? $value['conditions']: array()
             );
         }
+        // load all articles
+        // This isn't necessary for route to an article though
+        // will help to generate tag cloud/ category listing
+        $self->loadArticles();
+        // Register not found handler
+        $this->slim->notFound(function () use ($self) {
+            $self->slim->render('404');
+        });
     }
 
     /**

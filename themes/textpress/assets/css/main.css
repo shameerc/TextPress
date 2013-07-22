@@ -1,0 +1,196 @@
+ body {
+    padding-top: 0px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+  a{
+    color:rgb(24,70,82);
+  }
+  .header{
+    padding: 20px 0;
+    color: #f2f7e9;
+    background-image: linear-gradient(bottom, rgb(24,70,82) 11%, rgb(16,46,55) 81%);
+    background-image: -o-linear-gradient(bottom, rgb(24,70,82) 11%, rgb(16,46,55) 81%);
+    background-image: -moz-linear-gradient(bottom, rgb(24,70,82) 11%, rgb(16,46,55) 81%);
+    background-image: -webkit-linear-gradient(bottom, rgb(24,70,82) 11%, rgb(16,46,55) 81%);
+    background-image: -ms-linear-gradient(bottom, rgb(24,70,82) 11%, rgb(16,46,55) 81%);
+
+    background-image: -webkit-gradient(
+      linear,
+      left bottom,
+      left top,
+      color-stop(0.11, rgb(24,70,82)),
+      color-stop(0.81, rgb(16,46,55))
+    );
+  }
+  /* Custom container */
+  .container-narrow {
+    margin: 0 auto;
+    max-width: 1000px;
+    font-family: "open sans",helvetica,arial,sans-serif;
+  }
+  .container-narrow > hr {
+    margin: 30px 0;
+  }
+
+  /* Main marketing message and sign up button */
+  .jumbotron {
+    margin: 60px 0;
+    text-align: center;
+  }
+  .jumbotron h1 {
+    font-size: 58px;
+    font-weight: 500;
+    line-height: 1;
+  }
+  .jumbotron .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+  }
+
+  /* Supporting marketing content */
+  .marketing {
+    margin: 60px 0;
+  }
+  .marketing p + h4 {
+    margin-top: 28px;
+  }
+  .masthead h1{
+    font-size: 68px;
+    font-weight: 600;
+    height: 70px;
+    margin-top: 0;
+    padding-top: 20px;
+    color: #f2f7e9;
+  }
+  .nav-pills{
+    display: block;
+    text-align: center;
+  }
+  .nav-tabs > li, .nav-pills > li{
+    float: none;
+    display: inline-block;
+  }
+  .nav-pills a{
+    text-transform: uppercase;
+    font-weight: 300;
+    font-size:95%; 
+    letter-spacing: 1px;
+    color: #eee;
+  }
+  .nav-pills > .active > a, .nav-pills > .active > a:hover, .nav-pills > .active > a:focus {
+    color: #eee;
+    background-color: #7A7A7A;
+    text-transform: uppercase;
+    font-weight: 300;
+    font-size:95%;
+    letter-spacing: 1px;
+  }
+  .nav-pills > li > a:hover{
+    background-color: #7A7A7A;
+  }
+  .nav .dropdown-toggle .caret, .nav .dropdown-toggle:hover .caret{
+    border-top-color: #eee;
+    border-bottom-color: #eee;
+  }
+  .dropdown-menu > li {
+    text-align: left;
+    text-transform: inherit;
+  }
+  .dropdown-menu > li > a:hover,.dropdown-menu > li > a:focus{
+    background: #7A7A7A;
+  }
+  .post header h1 {
+    font-size: 40px;
+    font-weight: 300;
+    margin-bottom: 15px;
+  }
+  .post header h1 a{
+    -webkit-transition: color .25s ease-in;
+    -moz-transition: color .25s ease-in;
+    transition: color .25s ease-in;
+    color: rgb(24,70,82);
+  }
+  .post header h1 a:hover{
+    color: rgb(0, 121, 153);
+  }
+  .post:last-child{
+    padding-bottom: 10px;
+    border-bottom: none;
+  }
+  .post{
+    padding-top: 25px;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 30px;
+  }
+  .postmeta{
+    margin: 10px 0;
+    font-size: 14px;
+    font-weight: 200;
+  }
+  .postmeta .author-by{
+    color: #9CA79D;
+  }
+  .content {
+    font-size: 19px;
+    line-height: 26px;
+    font-weight: 300;
+  }
+  .content ul li {
+    line-height: 30px;
+  }
+  .more > .tags > .tag {
+    float: right;
+    padding: 1px 7px;
+    background: rgb(24,70,82);
+    margin: 0 2px;
+    text-transform: lowercase;
+  }
+  .more{
+    margin: 10px 0;
+  }
+  .more > a{
+    font-size: 20px;
+    font-weight: 200;
+    letter-spacing: 1px;
+    color: rgb(0, 121, 153);
+  }
+  #site-footer{
+    text-align: center;
+    font-size: 13px;
+    font-weight: 300;
+    padding-bottom: 10px;
+  }
+  #site-footer a{
+    -webkit-transition: color .25s ease-in;
+    -moz-transition: color .25s ease-in;
+    transition: color .25s ease-in;
+    color: rgb(24,70,82);
+  }
+  #site-footer a:hover{
+    color: rgb(0, 121, 153);
+  }
+  .news-head{
+    font-size: 28px;
+    font-weight: 300;
+    color: rgb(0, 121, 153);
+    margin-top: 30px;
+    letter-spacing: 1px;
+  }
+  .archives ul li {
+    line-height: 30px;
+    font-size: 16px;
+    list-style: square;
+  }
+  .archives-date {
+    margin-right: 10px;
+  }
+  .tags{
+    color: rgb(0, 121, 153);
+  }
+  .tags .tag {
+    background-color: #ededed;
+    padding: 2px 8px;
+    font-size: 14px;
+    font-weight: normal;
+    margin-right: 10px;
+  }

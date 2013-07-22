@@ -6,7 +6,7 @@ return array(
 	'site.title' => 'PHP Flat-file blog engine',  // Site default title (Global)
 	'article.path'=> './articles',      // Path to articles
 	'themes.path' => './themes',  // Path to templates
-	'active.theme'  => 'bootstrap',  // Current active template
+	'active.theme'  => 'textpress',  // Current active template
 	'layout.file' => 'layout',    // Site layout file
 	'file.extension' => '.txt',   // file extension of articles
 	'disqus.username' => '',   // Your disqus username or false (Global)
@@ -20,7 +20,7 @@ return array(
 			'__root__'=> array(
 					'route' => '/',
 					'template'=>'index',
-					'layout' => true
+					'layout' => 'layout_home'
 				),
 			'article' => array(
 					'route' => '/:year/:month/:date/:article',
@@ -49,8 +49,7 @@ return array(
 				),
 			'about' => array(
 					'route' => '/about',
-					'template' => 'about',
-					'layout' => false
+					'template' => 'about'
 				),
 			'rss' => array(
 					'route' => '/feed/rss(.xml)',

@@ -1,9 +1,9 @@
 <h1>Archives</h1>
 <div class="archives">
 <p>
+<ul>
 <?php
   if($archives){
-    echo  '<ul>';
   	$years = array();
     foreach($archives as $archive){
     ?>
@@ -12,12 +12,7 @@
       </li>
   <?php 
   	}
-    echo '</ul>';
-  } else{ ?>
-    No archives found.
-  <?php 
-  }
-  ?>
-
+  } ?>
+</ul>
 </p>
 </div>

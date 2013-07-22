@@ -17,16 +17,13 @@
     <![endif]-->
 
     <!-- Le styles -->
-    <link href="<?php echo $global['base.directory'];?>/assets/css/bootstrap.css" rel="stylesheet">
-    <link href="<?php echo $global['base.directory'];?>/assets/css/main.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600,300' rel='stylesheet' type='text/css'>
+    <link href="/themes/textpress/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/themes/textpress/assets/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link href="/themes/textpress/assets/css/main.css" rel="stylesheet">
 
     <!-- Le fav and touch icons -->
-    <link rel="shortcut icon" href="images/favicon.ico">
-    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
-    <script src="/assets/js/jquery.js"></script>
-    <script src="/assets/js/bootstrap.min.js"></script>
+
     <?php if($global['google.analytics']){?>
     <script type="text/javascript">
       var _gaq = _gaq || [];
@@ -44,12 +41,15 @@
   </script>
   <?php }?>
   </head>
+
   <body>
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <h1><a class="brand" href="<?php echo $global['prefix'];?>/"><?php echo $global['site.name'];?></a></h1>
-          <ul class="nav">
+    <div style="background:#0a777d; width:100%; height:5px;"></div>
+    <div class="header">
+      <div class="container-narrow">
+        <div class="masthead text-center">
+          <h1 class="muted">TextPress</h1>
+          <ul class="nav nav-pills">
+            <li class="<?php if($global["route"] == "/") echo "active";?>"><a href="/">Home</a></li>
             <li class="dropdown <?php if($global["route"] == "category") echo "active";?>">
               <a class="dropdown-toggle" id="drop5" role="button" data-toggle="dropdown" href="#">Categories <b class="caret"></b></b></a>
               <ul id="menu3" class="dropdown-menu" role="menu" aria-labelledby="drop5">
@@ -60,26 +60,30 @@
                 ?>
               </ul>
             </li>
-            <li class="<?php if($global["route"] == "archives") echo "active";?>"><a href="<?php echo $global['prefix'];?>/archives">Archives</a></li>
+            <li class="<?php if($global["route"] == "archives") echo "active";?>"><a href="/archives">Archives</a></li>
             <li><a href="https://github.com/shameerc/TextPress" target="_blank">Source</a>
-            <li class="<?php if($global["route"] == "about") echo "active";?>"><a href="<?php echo $global['prefix'];?>/about">About</a></li>
+            <li class="<?php if($global["route"] == "about") echo "active";?>"><a href="/about">About</a></li>
           </ul>
         </div>
       </div>
     </div>
-    <div class="container">
-      <div class="content">
-        <div class="row">
-          <div class="span13">
-            <?php echo $content;?>
-          </div>
+    <div class="container-narrow">
+      <div class="row-fluid">
+        <div class="span10 offset1">
+          <?php echo $content; ?>
         </div>
       </div>
+    </div>
+    <hr>
+    <footer id="site-footer">
+        <p>Powered by TextPress. &copy; <a href="http://blog.shameerc.com" target="_blank">Shameer C</a> 2013.</p>
+    </footer>
 
-      <footer>
-        <p>Powered by TextPress &copy; <a href="http://shameerc.com" target="_blank">Shameer C </a>2012</p>
-      </footer>
-    </div> <!-- /container -->
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     
+    <script type="text/javascript" src="/themes/textpress/assets/js/bootstrap.min.js"></script>
   </body>
 </html>

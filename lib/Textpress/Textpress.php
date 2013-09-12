@@ -157,7 +157,7 @@ class Textpress
     public function init()
     {
         if(!is_dir($this->config('article.path'))){
-            throw new Exception('Article location is invalid');
+            throw new \Exception('Article location is invalid');
         }
         $this->markdown     = $this->config('markdown');
         $this->_articlePath = $this->config('article.path');

@@ -536,6 +536,7 @@ class Textpress
                 'site.title' => $this->config('site.title'),
                 'disqus.username' => $this->config('disqus.username'),
                 'base.directory' => $this->config('base.directory'),
+                'assets.prefix' => $this->config('assets.prefix'),
                 'google.analytics' => $this->config('google.analytics'),
                 'prefix' => $this->config('prefix'),
                 'theme.base' => $themeBase

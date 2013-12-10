@@ -219,10 +219,10 @@ class Textpress
         $slug = (array_key_exists('slug', $meta) && $meta['slug'] !='') 
                     ? $meta['slug']
                     : $this->slugize($meta['title']);
-	$url = $this->getArticleUrl($meta['date'], $slug);
+        $url = $this->getArticleUrl($meta['date'], $slug);
         $meta['category'] = $this->collectCategories($meta);
         $meta['tag'] = $this->collectTags($meta);
-	$meta['url'] = $this->slim->request()->getUrl().$url;
+        $meta['url'] = $this->slim->request()->getUrl().$url;
         $article    = array(
                         'meta' => $meta, 
                         'content' => $contents,

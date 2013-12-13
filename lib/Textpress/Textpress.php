@@ -418,6 +418,9 @@ class Textpress
                 $args = func_get_args();
                 $layout = isset($value['layout']) ? $value['layout'] : true;
 
+                // This will store a custom function if defined into the route
+                $custom = isset($value['custom']) ? $value['custom'] : false;
+
                 if(!$layout){
                     $self->enableLayout = false;
                 }
@@ -426,7 +429,7 @@ class Textpress
                 }
 
                 $self->slim->view()->appendGlobalData(array("route" => $key));
-                $template = $value['template'];
+                $template = isset($value['template']) ? $value['template'] : false;
 
                 //set view data for article  and archives routes
                 switch ($key) {
@@ -447,6 +450,12 @@ class Textpress
                     case 'category' :
                     case 'tag'      :
                         $self->filterArticles($key,$args[0]);
+                        break;
+
+                    // If key is not matched, check if a custom function is declared
+                    default:
+                        if ($custom && is_callable($custom))
+                            call_user_func($custom, $self, $key, $value);
                         break;
                 }
 

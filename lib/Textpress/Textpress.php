@@ -212,19 +212,21 @@ class Textpress
         $content    = preg_replace("/\n{2,}/", "\n\n", $content);
         $sections   = explode("\n\n", $content);
         $meta       = json_decode(array_shift($sections),true);
-        $contents   = implode("\n\n",$sections);
+        $contents   = implode("\n\n", $sections);
         if($this->markdown){ 
             $contents = Markdown($contents);
         }
         $slug = (array_key_exists('slug', $meta) && $meta['slug'] !='') 
                     ? $meta['slug']
                     : $this->slugize($meta['title']);
+        $url = $this->getArticleUrl($meta['date'], $slug);
         $meta['category'] = $this->collectCategories($meta);
         $meta['tag'] = $this->collectTags($meta);
+        $meta['url'] = $this->slim->request()->getUrl().$url;
         $article    = array(
                         'meta' => $meta, 
                         'content' => $contents,
-                        'url'=>$this->getArticleUrl($meta['date'],$slug)
+                        'url' => $url
                         );
         return $this->viewData['article'] = $article;
     }
@@ -409,10 +411,16 @@ class Textpress
         $this->_routes = $this->config('routes');
         $self = $this; 
         $prefix = $self->slim->config('prefix');
+
         foreach ($this->_routes as $key => $value) {
+
             $this->slim->map($prefix . $value['route'],function() use($self,$key,$value){
                 $args = func_get_args();
                 $layout = isset($value['layout']) ? $value['layout'] : true;
+
+                // This will store a custom function if defined into the route
+                $custom = isset($value['custom']) ? $value['custom'] : false;
+
                 if(!$layout){
                     $self->enableLayout = false;
                 }
@@ -421,7 +429,8 @@ class Textpress
                 }
 
                 $self->slim->view()->appendGlobalData(array("route" => $key));
-                $template = $value['template'];
+                $template = isset($value['template']) ? $value['template'] : false;
+
                 //set view data for article  and archives routes
                 switch ($key) {
                     case '__root__' :
@@ -442,19 +451,29 @@ class Textpress
                     case 'tag'      :
                         $self->filterArticles($key,$args[0]);
                         break;
+
+                    // If key is not matched, check if a custom function is declared
+                    default:
+                        if ($custom && is_callable($custom))
+                            call_user_func($custom, $self, $key, $value);
+                        break;
                 }
+
                 // render the template file
                 $self->render($template);
+
             })->via('GET')
               ->name($key)
               ->conditions(
                 isset($value['conditions']) ? $value['conditions']: array()
             );
         }
+
         // load all articles
         // This isn't necessary for route to an article though
         // will help to generate tag cloud/ category listing
         $self->loadArticles();
+
         // Register not found handler
         $this->slim->notFound(function () use ($self) {
             $self->slim->render('404');

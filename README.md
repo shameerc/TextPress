@@ -15,13 +15,13 @@ Create an account at http://openshift.redhat.com/ and install the client tools (
 
 Create a php-5.3 application (you can call your application whatever you want)
 
-```shell
+```php
     rhc app create textpress php-5.3 --from-code=git://github.com/tigefa4u/TextPress-Openshift.git
 ```
 
 That's it, you can now checkout your application at:
 
-```
+```php
     http://textpress-$yournamespace.rhcloud.com
 ```
 

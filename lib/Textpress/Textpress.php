@@ -205,14 +205,11 @@ class Textpress
         }
         $handle     = fopen($fullPath, 'r');
         $content    = stream_get_contents($handle);
-        // hack for cross platform newline char issue. (by http://darklaunch.com/)
-        $content    = str_replace("\r\n", "\n", $content);
-        $content    = str_replace("\r", "\n", $content);
         // Don't allow out-of-control blank lines
         $content    = preg_replace("/\n{2,}/", "\n\n", $content);
-        $sections   = explode("\n\n", $content);
+        $sections   = explode( PHP_EOL . PHP_EOL, $content);
         $meta       = json_decode(array_shift($sections),true);
-        $contents   = implode("\n\n", $sections);
+        $contents   = implode( PHP_EOL . PHP_EOL, $sections);
         if($this->markdown){ 
             $contents = Markdown($contents);
         }

@@ -60,6 +60,7 @@
                 ?>
               </ul>
             </li>
+            <li><a href="/archives">Archives</a></li>
             <li><a href="https://github.com/shameerc/TextPress" target="_blank">Source</a></li>
             <li><a href="/about">About</a></li>
           </ul>

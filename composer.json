@@ -1,0 +1,13 @@
+{
+    "require": {
+        "php": ">=5.3.3",
+        "michelf/php-markdown" : "1.4.*",
+        "slim/slim": ">=2.3"
+    },
+    "autoload": {
+        "psr-0": {
+            "Textpress" : "src/shameerc"
+        }
+
+    }
+}

@@ -1,19 +1,27 @@
 <?php
+
+ini_set('display_errors', true);
+error_reporting(E_ALL);
+
 /**
-* Require Slim and register Slim autoloader
+*
+* Require composer autoloader
 */
-require 'Slim/Slim.php';
-\Slim\Slim::registerAutoloader();
+
+require './vendor/autoload.php';
+
+use Slim;
+use Textpress;
 
 /**
 * Require config file
 * @return Array config values
 */
 
-$config = require 'config/config.php';
+$config = require './config/config.php';
 
-require 'lib/Textpress/Textpress.php';
-require 'lib/Textpress/View.php';
+// require 'lib/Textpress/Textpress.php';
+// require 'lib/Textpress/View.php';
 
 /**
 * Create an instance of Slim with custom view

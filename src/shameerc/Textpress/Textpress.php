@@ -161,9 +161,6 @@ class Textpress
         }
         $this->markdown     = $this->config('markdown');
         $this->_articlePath = $this->config('article.path');
-        if($this->markdown){
-            require_once __DIR__ . '/../markdown.php';
-        }
         $this->themeBase = $this->config('themes.path') . "/" . $this->config("active.theme");
         $this->slim->view()->setTemplatesDirectory($this->themeBase);
         $this->setViewConfig();
@@ -214,7 +211,7 @@ class Textpress
         $meta       = json_decode(array_shift($sections),true);
         $contents   = implode("\n\n",$sections);
         if($this->markdown){ 
-            $contents = Markdown($contents);
+            $contents = \Michelf\MarkdownExtra::defaultTransform($contents);
         }
         $slug = (array_key_exists('slug', $meta) && $meta['slug'] !='') 
                     ? $meta['slug']

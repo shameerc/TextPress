@@ -1,0 +1,1 @@
+From layout <?php echo $global['test']; ?>. <?php echo $content;?>

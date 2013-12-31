@@ -1,0 +1,7 @@
+{
+	"title": "Test article",
+	"date": "06-02-2012",
+	"slug": "test-article"
+}
+
+Test article content

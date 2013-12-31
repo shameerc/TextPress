@@ -9,7 +9,7 @@
       ?>
     </title>
     <meta name="description" content="">
-    <meta content='Authur Name' name='<?php echo $global['author.name']; ?>'/> 
+    <meta name="author" content="<?php echo $global['author.name']; ?>"> 
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
@@ -49,7 +49,7 @@
         <div class="masthead text-center">
           <h1 class="muted">TextPress</h1>
           <ul class="nav nav-pills">
-            <li class="active"><a href="/">Home</a></li>
+            <li class="<?php if($global["route"] == "/") echo "active";?>"><a href="/">Home</a></li>
             <li class="dropdown <?php if($global["route"] == "category") echo "active";?>">
               <a class="dropdown-toggle" id="drop5" role="button" data-toggle="dropdown" href="#">Categories <b class="caret"></b></b></a>
               <ul id="menu3" class="dropdown-menu" role="menu" aria-labelledby="drop5">
@@ -60,9 +60,9 @@
                 ?>
               </ul>
             </li>
+            <li class="<?php if($global["route"] == "archives") echo "active";?>"><a href="/archives">Archives</a></li>
             <li><a href="https://github.com/shameerc/TextPress" target="_blank">Source</a>
-            <li><a href="/about">About</a></li>
-            <li><a href="/archives">Archives</a></li>
+            <li class="<?php if($global["route"] == "about") echo "active";?>"><a href="/about">About</a></li>
           </ul>
         </div>
         <div class="jumbotron">

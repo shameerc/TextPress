@@ -1,21 +1,21 @@
 <article class="post">
   <header>
-    <h1><?php echo $article['meta']['title']; ?></h1>
+    <h1><?php echo $article->getTitle(); ?></h1>
     <div class="postmeta">
-    <span class="date"><?php  echo date($global['date.format'],strtotime($article['meta']['date']));  ?></span> /
+    <span class="date"><?php  echo $article->getDate($global['date.format']);  ?></span> /
     <span class="author-by"> By </span>
-    <span class="author"><?php  echo isset($article['meta']['author'])
-                        ? $article['meta']['author']
+    <span class="author"><?php  echo $article->getAuthor()
+                        ? $article->getAuthor()
                         : $global['author.name'] ;  ?></span>
     </div>
   </header>
 
   <section class="content">
-    <?php echo $article['content']; ?>
+    <?php echo $article->getContent(); ?>
     <div class="tags">
       Tags : 
       <?php
-        foreach ($article['meta']['tag'] as $slug => $tag) {
+        foreach ($article->getTags() as $slug => $tag) {
           echo '<span class="tag"><a href="/tag/' . $slug .'">' . $tag->name . "</a></span>";
         }
         ?>

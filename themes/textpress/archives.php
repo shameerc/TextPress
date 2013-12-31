@@ -8,7 +8,8 @@
     foreach($archives as $archive){
     ?>
       <li>
-       <span class="archives-date"><?php echo date($global['date.format'],strtotime($archive['meta']['date'])); ?></span> <a href="<?php echo $archive['url']; ?>"><?php echo $archive['meta']['title']; ?></a>
+        <span class="archives-date"><?php echo $archive->getDate($global['date.format']); ?></span> 
+        <a href="<?php echo $archive->getUrl(); ?>"><?php echo $archive->getTitle(); ?></a>
       </li>
   <?php 
   	}

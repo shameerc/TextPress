@@ -54,20 +54,6 @@ class Textpress
     public $fileNames = array();
     
     /**
-    * Article location
-    *
-    * @var string 
-    */
-    private $_articlePath;
-
-    /**
-    * Do we need markdown parser?
-    * 
-    * @var bool
-    */
-    public $markdown;
-
-    /**
     * Articles
     *
     * @var array 
@@ -126,7 +112,6 @@ class Textpress
     {
         $this->slim = $slim;
         $this->setConfig($config);
-        $this->init();
     }
 
     /**
@@ -146,9 +131,11 @@ class Textpress
     * @var string $configVar Config variable
     * @return Configuration value
     */
-    public function config($configVar)
+    public function getConfig($configVar)
     {
-        return $this->config[$configVar];
+        return isset($this->config[$configVar]) 
+                ? $this->config[$configVar]
+                : null ;
     }
 
     /**
@@ -156,16 +143,13 @@ class Textpress
     */
     public function init()
     {
-        if(!is_dir($this->config('article.path'))){
+        if(!is_dir($this->getConfig('article.path'))){
             throw new \Exception('Article location is invalid');
         }
-        $this->markdown     = $this->config('markdown');
-        $this->_articlePath = $this->config('article.path');
-        $this->themeBase = $this->config('themes.path') . "/" . $this->config("active.theme");
+        $this->themeBase = $this->getConfig('themes.path') . "/" . $this->getConfig("active.theme");
         $this->slim->view()->setTemplatesDirectory($this->themeBase);
         $this->setViewConfig();
         $this->setRoutes();
-        $self = $this;
     }
 
     /**
@@ -175,8 +159,8 @@ class Textpress
     {
         if (empty($this->fileNames))
         {
-            $iterator = new \DirectoryIterator($this->_articlePath);
-            $files = new \RegexIterator($iterator,'/\\'.$this->config('file.extension').'$/'); 
+            $iterator = new \DirectoryIterator($this->getConfig('article.path'));
+            $files = new \RegexIterator($iterator,'/\\'.$this->getConfig('file.extension').'$/'); 
             foreach($files as $file){
                 if($file->isFile()){
                     $this->fileNames[] = $file->getFilename();
@@ -203,11 +187,11 @@ class Textpress
         $handle     = fopen($fullPath, 'r');
         $content    = stream_get_contents($handle);
         // Don't allow out-of-control blank lines
-        $content    = preg_replace("/\n{2,}/", "\n\n", $content);
+        $content    = preg_replace("/" . PHP_EOL. "{2,}/", PHP_EOL . PHP_EOL, $content);
         $sections   = explode( PHP_EOL . PHP_EOL, $content);
         $meta       = json_decode(array_shift($sections), true);
         $contents   = implode( PHP_EOL . PHP_EOL, $sections);
-        if($this->markdown){ 
+        if($this->getConfig('markdown')){ 
             $contents = \Michelf\MarkdownExtra::defaultTransform($contents);
         }
         $slug = (array_key_exists('slug', $meta) && $meta['slug'] !='') 
@@ -217,11 +201,7 @@ class Textpress
         $meta['category'] = $this->collectCategories($meta);
         $meta['tag'] = $this->collectTags($meta);
         $meta['url'] = $this->slim->request()->getUrl().$url;
-        $article    = array(
-                        'meta' => $meta, 
-                        'content' => $contents,
-                        'url' => $url
-                        );
+        $article    = new Article($meta, $contents);
         return $this->viewData['article'] = $article;
     }
 
@@ -232,11 +212,11 @@ class Textpress
     */
     public function setArticle($url)
     {
-        if(! isset( $this->allArticles[$url] )){
+        if (!isset( $this->allArticles[$url] )) {
             $this->notFound();
         }
         $article = $this->allArticles[$url];
-        $this->slim->view()->appendGlobalData($article['meta']); 
+        $this->slim->view()->appendGlobalData($article->getMeta()); 
         return $this->viewData['article'] = $article;
     }
 
@@ -255,11 +235,11 @@ class Textpress
                 break;
             }
             $article = $this->loadArticle($filename);
-            $slug = isset($article['meta']['slug']) 
-                        ? $article['meta']['slug']
-                        : $this->slugize($article['meta']['title']);
-            $prefix = $this->config('prefix');
-            $url    = $this->getArticleUrl($article['meta']['date'],$slug);
+            $slug = $article->getMeta('slug') 
+                        ? $article->getMeta('slug') 
+                        : $this->slugize($article->getTitle());
+            $prefix = $this->getConfig('prefix');
+            $url    = $this->getArticleUrl($article->getDate(),$slug);
             $allArticles[$url] = $article;
             $i++;
         }
@@ -281,8 +261,8 @@ class Textpress
     public function sortArticles($articles)
     {
         $results    = array();
-        foreach($articles as $article){
-            $date = new \DateTime($article['meta']['date']);
+        foreach($articles as $article) {
+            $date = new \DateTime($article->getDate());
             $timestamp = $date->getTimestamp();
             $timestamp = array_key_exists($timestamp, $results) ? $timestamp + 1 : $timestamp;
             $results[$timestamp] = $article;
@@ -326,12 +306,12 @@ class Textpress
     {
         $this->viewData['archives']  = array();
         $archives = array();
-        if(is_null($date)){
+        if (is_null($date)) {
             $archives = $this->allArticles;
         }
         else{
             foreach($this->allArticles as $article){
-                if($date == $this->dateFormat($article['meta']['date'],$format))
+                if ($date == $article->getDate($format))
                     $archives[] = $article;
             }
         }
@@ -351,7 +331,8 @@ class Textpress
     public function filterArticles($filter,$value){
         $articles = array();
         foreach ($this->allArticles as $article) {
-            if(array_key_exists($filter, $article['meta']) && array_key_exists($value, $article['meta'][$filter]))
+            if ( $article->getMeta($filter) 
+                && array_key_exists($value, $article->getMeta($filter)))
                 $articles[] = $article;
         }
         return $this->viewData['articles'] = $articles;
@@ -377,7 +358,7 @@ class Textpress
     */
     public function dateFormat($date,$format=null)
     {
-        $format = is_null($format) ? $this->config('date.format') : $format;
+        $format = is_null($format) ? $this->getConfig('date.format') : $format;
         $date  = new \DateTime($date);
         return $date->format($format);  
     }
@@ -391,7 +372,7 @@ class Textpress
     public function getFullPath($path)
     {
         if(in_array($path , $this->getFileNames())){
-            return $this->_articlePath . '/' . $path ;
+            return $this->getConfig('article.path') . '/' . $path ;
         }
         return false;
     }
@@ -402,13 +383,13 @@ class Textpress
     */
     public function setRoutes()
     {
-        $this->_routes = $this->config('routes');
+        $this->_routes = $this->getConfig('routes');
         $self = $this; 
-        $prefix = $self->slim->config('prefix');
+        $prefix = $this->getConfig('prefix');
 
         foreach ($this->_routes as $key => $value) {
 
-            $this->slim->map($prefix . $value['route'],function() use($self,$key,$value){
+            $this->slim->map($prefix . $value['route'], function() use($self, $key, $value){
                 $args = func_get_args();
                 $layout = isset($value['layout']) ? $value['layout'] : true;
 
@@ -434,8 +415,8 @@ class Textpress
                         break;
                     case 'article'  :
                         $article = $self->setArticle($self->getPath($args));
-                        $template = (isset($article['meta']['template']) && $article['meta']['template'] !="")
-                                        ? $article['meta']['template']
+                        $template = ($article->getMeta('template') && $article->getMeta('template') !="")
+                                        ? $article->getMeta('template')
                                         : $template;
                         break;
                     case 'archives' :
@@ -462,11 +443,6 @@ class Textpress
                 isset($value['conditions']) ? $value['conditions']: array()
             );
         }
-
-        // load all articles
-        // This isn't necessary for route to an article though
-        // will help to generate tag cloud/ category listing
-        $self->loadArticles();
 
         // Register not found handler
         $this->slim->notFound(function () use ($self) {
@@ -541,17 +517,17 @@ class Textpress
     public function setViewConfig()
     {
         $themeDir   = ltrim($this->themeBase, "./");
-        $themeBase = $this->config('base.directory') . "/" . $themeDir;
+        $themeBase = $this->getConfig('base.directory') . "/" . $themeDir;
         $data = array(
-                'date.format' => $this->config('date.format'),
-                'author.name' => $this->config('author.name'),
-                'site.name' => $this->config('site.name'),
-                'site.title' => $this->config('site.title'),
-                'disqus.username' => $this->config('disqus.username'),
-                'base.directory' => $this->config('base.directory'),
-                'assets.prefix' => $this->config('assets.prefix'),
-                'google.analytics' => $this->config('google.analytics'),
-                'prefix' => $this->config('prefix'),
+                'date.format' => $this->getConfig('date.format'),
+                'author.name' => $this->getConfig('author.name'),
+                'site.name' => $this->getConfig('site.name'),
+                'site.title' => $this->getConfig('site.title'),
+                'disqus.username' => $this->getConfig('disqus.username'),
+                'base.directory' => $this->getConfig('base.directory'),
+                'assets.prefix' => $this->getConfig('assets.prefix'),
+                'google.analytics' => $this->getConfig('google.analytics'),
+                'prefix' => $this->getConfig('prefix'),
                 'theme.base' => $themeBase
             );
         $this->slim->view()->appendGlobalData($data);
@@ -640,38 +616,8 @@ class Textpress
     */
     public function run()
     {
+        $this->init();
+        $this->loadArticles();
         $this->slim->run();
-    }
-}
-
-/**
-* Represents a Tag with name and count 
-*/
-class Tag
-{
-    /**
-    * tag name 
-    *
-    * @var string
-    */
-    public $name;
-
-    /**
-    * number of occurances of a tag 
-    *
-    * @var int
-    */
-    public $count;
-
-    /**
-    * Constructor 
-    * 
-    * @param string $name  Tag name
-    * @param int $count  Number of occurances of a tag
-    */
-    public function __construct($name,$count=1)
-    {
-        $this->name = $name;
-        $this->count = $count;
     }
 }

@@ -29,78 +29,40 @@
  * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
 namespace Textpress;
 
 /**
-* View class for Textpress 
+* Tag
+* Represents a Tag with name and count 
 *
 * @author       Shameer
 * @since        1.0 
 */
-
-class View extends \Slim\View
+class Tag
 {
-	/**
-	* @var  String layout file
-	*/
-	public $layout = false;
+    /**
+    * tag name 
+    *
+    * @var string
+    */
+    public $name;
 
-	/**
-	* @var Array Global array
-	*/
-	public $global = array();
+    /**
+    * number of occurances of a tag 
+    *
+    * @var int
+    */
+    public $count;
 
-	/**
-	* Set layout file
-	* @var String layout file
-	*/
-	public function setLayout($layout)
-	{
-		$this->layout = $layout;
-	}
-
-	/**
-	* Append values to existing global values
-	*@var array data
-	*/
-	public function appendGlobalData(Array $data)
-	{
-		$this->global = array_merge($this->global,$data);
-	}
-
-
-	/**
-	* Render template
-	* @var string $template Template to be rendered
-	*/
-	public function render($template = '')
-	{ 
-		$template = is_string($template) ? $template . '.php' : null;
-		if($template){
-			$this->appendData(array('global' => $this->global));
-			$content =  parent::render($template);
-		}
-		else{
-			$content = '';
-		}
-		// make sure buffers flushed
-		ob_end_flush(); 
-		if(ob_get_length() !== false)
-	    	ob_flush();
-		ob_start();
-		extract(array('content' => $content, 'global' => $this->global));
-		if($this->layout){
-			$layoutPath = $this->getTemplatesDirectory() . DIRECTORY_SEPARATOR . ltrim($this->layout, '/');
-			if ( !is_readable($layoutPath) ) {
-            	throw new \RuntimeException('View cannot render layout `' . $layoutPath );
-        	}
-	        require $layoutPath;
-		}
-		else{
-			echo $content;
-		} 
-        return ob_get_clean();
-	}	
-
+    /**
+    * Constructor 
+    * 
+    * @param string $name  Tag name
+    * @param int $count  Number of occurances of a tag
+    */
+    public function __construct($name, $count=1)
+    {
+        $this->name = $name;
+        $this->count = $count;
+    }
 }

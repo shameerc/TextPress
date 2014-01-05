@@ -181,10 +181,10 @@ class Textpress
     */
     public function loadArticle($fileName)
     {
-        if(!($fullPath = $this->getFullPath($fileName))){
+        if(!($articlePath = $this->getArticlePath($fileName))){
             return false;
         }
-        $handle     = fopen($fullPath, 'r');
+        $handle     = fopen($articlePath, 'r');
         $content    = stream_get_contents($handle);
         // Don't allow out-of-control blank lines
         $content    = preg_replace("/" . PHP_EOL. "{2,}/", PHP_EOL . PHP_EOL, $content);
@@ -200,24 +200,9 @@ class Textpress
         $url = $this->getArticleUrl($meta['date'], $slug);
         $meta['category'] = $this->collectCategories($meta);
         $meta['tag'] = $this->collectTags($meta);
-        $meta['url'] = $this->slim->request()->getUrl().$url;
-        $article    = new Article($meta, $contents);
-        return $this->viewData['article'] = $article;
-    }
-
-    /**
-    * Sets view data for an article route.
-    *
-    * @param string $url URL without prefix
-    */
-    public function setArticle($url)
-    {
-        if (!isset( $this->allArticles[$url] )) {
-            $this->notFound();
-        }
-        $article = $this->allArticles[$url];
-        $this->slim->view()->appendGlobalData($article->getMeta()); 
-        return $this->viewData['article'] = $article;
+        $meta['url'] = $this->slim->request()->getUrl() . $url;
+        $meta['path'] = $url;
+        return new Article($meta, $contents);
     }
 
     /**
@@ -238,9 +223,8 @@ class Textpress
             $slug = $article->getMeta('slug') 
                         ? $article->getMeta('slug') 
                         : $this->slugize($article->getTitle());
-            $prefix = $this->getConfig('prefix');
-            $url    = $this->getArticleUrl($article->getDate(),$slug);
-            $allArticles[$url] = $article;
+            $path = $article->getPath();
+            $allArticles[$path] = $article;
             $i++;
         }
         $this->allArticles = $allArticles;
@@ -269,6 +253,40 @@ class Textpress
         }
         krsort($results);
         return $results;
+    }
+
+    /**
+    * Filter list of articles based on the meta key-value
+    * Mainly used in categories and tags, but you can extend for other custom 
+    * meta keys also. Just add the routes and update routing function to include those routes
+    * 
+    * @param String $filter meta key to be searched in articles
+    * @param string $value value to be mached with
+    * @return array list of article matching the criteria
+    */
+    public function filterArticles($filter,$value){
+        $articles = array();
+        foreach ($this->allArticles as $article) {
+            if ( $article->getMeta($filter) 
+                && array_key_exists($value, $article->getMeta($filter)))
+                $articles[] = $article;
+        }
+        return $this->viewData['articles'] = $articles;
+    }
+
+    /**
+    * Sets view data for an article route.
+    *
+    * @param string $url URL without prefix
+    */
+    public function setArticle($path)
+    {
+        if (!isset( $this->allArticles[$path] )) {
+            $this->notFound();
+        }
+        $article = $this->allArticles[$path];
+        $this->slim->view()->appendGlobalData($article->getMeta()); 
+        return $this->viewData['article'] = $article;
     }
 
     /**
@@ -319,62 +337,12 @@ class Textpress
     }
 
     /**
-    *
-    * Filter list of articles based on the meta key-value
-    * Mainly used in categories and tags, but you can extend for other custom 
-    * meta keys also. Just add the routes and update routing function to include those routes
-    * 
-    * @param String $filter meta key to be searched in articles
-    * @param string $value value to be mached with
-    * @return array list of article matching the criteria
-    */
-    public function filterArticles($filter,$value){
-        $articles = array();
-        foreach ($this->allArticles as $article) {
-            if ( $article->getMeta($filter) 
-                && array_key_exists($value, $article->getMeta($filter)))
-                $articles[] = $article;
-        }
-        return $this->viewData['articles'] = $articles;
-    }
-
-    /**
     * Custom 404 handler
     * Function can be called for handling 404 errors
     */
     public function notFound()
     {
-        $self = $this;
-        $this->slim->notFound(function() use($self){
-            $self->slim->render('404');
-        });
-    }
-
-    /**
-    * Helper function for date formatting
-    *
-    * @param $date Input date
-    * @param $format Date format
-    */
-    public function dateFormat($date,$format=null)
-    {
-        $format = is_null($format) ? $this->getConfig('date.format') : $format;
-        $date  = new \DateTime($date);
-        return $date->format($format);  
-    }
-
-    /**
-    * Function to get full path of article file from its filename
-    *
-    * @param $path String File name
-    * @return String Path to file or false if file does not exists
-    */
-    public function getFullPath($path)
-    {
-        if(in_array($path , $this->getFileNames())){
-            return $this->getConfig('article.path') . '/' . $path ;
-        }
-        return false;
+        $this->slim->notFound();
     }
 
     /**
@@ -388,20 +356,12 @@ class Textpress
         $prefix = $this->getConfig('prefix');
 
         foreach ($this->_routes as $key => $value) {
-
             $this->slim->map($prefix . $value['route'], function() use($self, $key, $value){
                 $args = func_get_args();
                 $layout = isset($value['layout']) ? $value['layout'] : true;
 
                 // This will store a custom function if defined into the route
                 $custom = isset($value['custom']) ? $value['custom'] : false;
-
-                if(!$layout){
-                    $self->enableLayout = false;
-                }
-                else{
-                    $self->setLayout($layout);
-                }
 
                 $self->slim->view()->appendGlobalData(array("route" => $key));
                 $template = isset($value['template']) ? $value['template'] : false;
@@ -433,7 +393,12 @@ class Textpress
                             call_user_func($custom, $self, $key, $value);
                         break;
                 }
-
+                if(!$layout){
+                    $self->enableLayout = false;
+                }
+                else{
+                    $self->setLayout($layout);
+                }
                 // render the template file
                 $self->render($template);
 
@@ -451,7 +416,22 @@ class Textpress
     }
 
     /**
+    * Function to get full path of article file from its filename
+    *
+    * @param $path String File name
+    * @return String Path to file or false if file does not exists
+    */
+    public function getArticlePath($path)
+    {
+        if(in_array($path , $this->getFileNames())){
+            return $this->getConfig('article.path') . '/' . $path ;
+        }
+        return false;
+    }
+
+    /**
     * Constructs file name from route params
+    *
     * @param $params Array route parameters
     * @return String file name 
     */
@@ -579,6 +559,19 @@ class Textpress
             $this->tags = array_merge($this->tags,$temp);
         }
         return $temp;
+    }
+
+    /**
+    * Helper function for date formatting
+    *
+    * @param $date Input date
+    * @param $format Date format
+    */
+    public function dateFormat($date,$format=null)
+    {
+        $format = is_null($format) ? $this->getConfig('date.format') : $format;
+        $date  = new \DateTime($date);
+        return $date->format($format);  
     }
 
     /**

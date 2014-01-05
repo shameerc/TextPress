@@ -91,7 +91,7 @@ class TextpressTest extends \PHPUnit_Framework_TestCase
         $slim = new \Slim\Slim();
         $textpress =  new Textpress($slim, self::config());
         $fileNames = $textpress->getFileNames();
-        $this->assertEquals("2012-02-16-test-article-2.txt", $fileNames[0]);
+        $this->assertTrue(in_array("2012-02-16-test-article-2.txt", $fileNames));
     }
 
     public function testLoadArticles()

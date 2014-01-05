@@ -118,7 +118,7 @@ class Article
     */
     public function getTitle()
     {
-        return $this->getMeta("title");
+        return $this->getMeta('title');
     }
 
     /**
@@ -133,13 +133,23 @@ class Article
     }
 
     /**
+    * Get a path to the article
+    * 
+    * @return string path to article
+    */
+    public function getPath()
+    {
+        return $this->getMeta('path');
+    }
+
+    /**
     *
     * Get article url
     * @return string article url
     */
     public function getUrl()
     {
-        return $this->getMeta("url");
+        return $this->getMeta('url');
     }
 
     /**

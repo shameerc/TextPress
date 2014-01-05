@@ -4,14 +4,14 @@
 * Require composer autoloader
 */
 
-require './vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 /**
 * Require config file
 * @return Array config values
 */
 
-$config = require './config/config.php';
+$config = require __DIR__ . '/config/config.php';
 
 /**
 * Create an instance of Slim with custom view

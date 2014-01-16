@@ -447,12 +447,16 @@ class Textpress
                     case 'category' :
                     case 'tag'      :
                         $self->filterArticles($key,$args[0]);
+                        $self->slim->view()->appendGlobalData(array('filter' => array(
+                            'type' => $key,
+                            'value' => $args[0]
+                        )));
                         break;
 
                     // If key is not matched, check if a custom function is declared
                     default:
                         if ($custom && is_callable($custom))
-                            call_user_func($custom, $self, $key, $value);
+                            call_user_func($custom, $self, $key, $value, $args);
                         break;
                 }
 

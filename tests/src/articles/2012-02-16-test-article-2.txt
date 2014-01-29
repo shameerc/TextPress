@@ -1,6 +1,6 @@
 {
 	"title": "Test article 2",
-	"date": "06-02-2012",
+	"date": "16-02-2012",
 	"slug": "test-article-2"
 }
 

@@ -266,10 +266,10 @@ class Textpress
     */
     public function filterArticles($filter,$value){
         $articles = array();
-        foreach ($this->allArticles as $article) {
+        foreach ($this->allArticles as $path => $article) {
             if ( $article->getMeta($filter) 
                 && array_key_exists($value, $article->getMeta($filter)))
-                $articles[] = $article;
+                $articles[$path] = $article;
         }
         return $this->viewData['articles'] = $articles;
     }
@@ -296,7 +296,7 @@ class Textpress
     */
     public function loadArchives($route)
     {
-        switch(count($route)){
+        switch (count($route)) {
             case 0 :
                 $this->setArchives();
                 break;
@@ -327,7 +327,7 @@ class Textpress
         if (is_null($date)) {
             $archives = $this->allArticles;
         }
-        else{
+        else {
             foreach($this->allArticles as $article){
                 if ($date == $article->getDate($format))
                     $archives[] = $article;
@@ -523,7 +523,7 @@ class Textpress
     {
         $temp = array();
         if(array_key_exists('category', $meta) && $meta['category']){
-            $categories = explode(',', $meta['category']);
+            $categories = explode(',', trim($meta['category'], ', '));
             foreach ($categories as  $category) {
                 $slug = $this->slugize($category);
                 $temp[$slug] = trim($category);
@@ -545,14 +545,14 @@ class Textpress
     {
         $temp = array();
         if(array_key_exists('tag', $meta) && $meta['tag']){
-            $tags = explode(',', $meta['tag']);
+            $tags = explode(',', trim($meta['tag'], ', '));
             foreach ($tags as $tag) {
                 $slug = $this->slugize($tag);
-                if(isset($this->tags[$slug])){
+                if(isset($this->tags[$slug])) {
                     $temp[$slug] = $this->tags[$slug];
                     $temp[$slug]->count++;
                 }
-                else{
+                else {
                     $temp[$slug] = new Tag(trim($tag));
                 }
             }
@@ -577,11 +577,13 @@ class Textpress
     /**
     * @return array view data
     */
-    public function getViewData()
+    public function getViewData($key = null)
     {
-        return isset($this->viewData)
+        return is_null($key) 
                     ? $this->viewData
-                    : array();
+                    : ( isset($this->viewData[$key])
+                        ? $this->viewData[$key]
+                        : false );
     }
 
     /**

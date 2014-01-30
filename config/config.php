@@ -60,6 +60,11 @@ return array(
 					'route' => '/feed(/atom(.xml))',
 					'template' => 'atom',
 					'layout' => false,
+				),
+			'sitemap' => array(	
+					'route' => '/sitemap.xml',
+					'template' => 'sitemap',
+					'layout' => false,
 				)
 		),
 );

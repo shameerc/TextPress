@@ -337,6 +337,26 @@ class Textpress
     }
 
     /**
+    * Sets view data for sitemap.
+    *
+    * @return array sitemap url set.
+    */
+    public function setSitemapData()
+    {
+        $sitemapData = array();
+        foreach ($this->allArticles as  $article) {
+            $sitemapData[] = array(
+                    'loc' => $article->getUrl(),
+                    'lastmod' => $article->getDate(),
+                    'changefreq' => 'daily',
+                    'priority' => '0.9'
+                );
+        }
+        $this->viewData['baseUrl'] = $this->slim->request()->getUrl();
+        return $this->viewData['sitemapData'] = $sitemapData;
+    }
+
+    /**
     * Custom 404 handler
     * Function can be called for handling 404 errors
     */
@@ -372,6 +392,9 @@ class Textpress
                     case 'rss'      :
                     case 'atom'     :
                         $self->allArticles = array_slice($self->allArticles, 0, 10);
+                        break;
+                    case 'sitemap'  :
+                        $self->setSitemapData();
                         break;
                     case 'article'  :
                         $article = $self->setArticle($self->getPath($args));

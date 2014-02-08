@@ -4,6 +4,7 @@ return array(
 	'author.name' => 'Author name', // Global author name 
 	'site.name'  => 'TextPress',   // Site name (Global)
 	'site.title' => 'PHP Flat-file blog engine',  // Site default title (Global)
+	'site.description' => 'TextPress is an open source flat-file blog engine for PHP',  // Site default description (Global)
 	'article.path'=> './articles',      // Path to articles
 	'themes.path' => './themes',  // Path to templates
 	'active.theme'  => 'textpress',  // Current active template
@@ -14,6 +15,11 @@ return array(
 	'assets.prefix' => '', // prefix to be added with assets files
 	'prefix' => '',   // prefix to be added with all URLs (not to assets). eg : '/blog'
 	'google.analytics' => false, // Google analytics code. set false to disable
+	'cache' => array(
+			'enabled' => true, // Enable/Disable cache
+			'expiry' => 24, // Cache expiry, in hours. -1 for no expiry
+			'path' => './cache'
+		),
 	// Define routes
 	'routes' => array(
 			// Site root

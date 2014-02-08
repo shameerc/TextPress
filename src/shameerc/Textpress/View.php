@@ -74,7 +74,7 @@ class View extends \Slim\View
 	* Render template
 	* @var string $template Template to be rendered
 	*/
-	public function render($template = '', $data = null)
+	public function render($template = '')
 	{ 
 		$template = is_string($template) ? $template . '.php' : null;
 		if($template){
@@ -84,11 +84,6 @@ class View extends \Slim\View
 		else{
 			$content = '';
 		}
-		// make sure buffers flushed
-		ob_end_flush(); 
-		if(ob_get_length() !== false)
-	    	ob_flush();
-		ob_start();
 		extract(array('content' => $content, 'global' => $this->global));
 		if($this->layout){
 			$layoutPath = $this->getTemplatesDirectory() . DIRECTORY_SEPARATOR . ltrim($this->layout, '/');
@@ -100,7 +95,6 @@ class View extends \Slim\View
 		else{
 			echo $content;
 		} 
-        return ob_get_clean();
 	}	
 
 }

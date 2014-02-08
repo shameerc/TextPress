@@ -112,6 +112,9 @@ class Textpress
     {
         $this->slim = $slim;
         $this->setConfig($config);
+        if (isset($config['cache']) && $config['cache']['enabled']) {
+            $this->slim->add(new Cache($config['cache']));
+        }
     }
 
     /**
@@ -374,7 +377,6 @@ class Textpress
         $this->_routes = $this->getConfig('routes');
         $self = $this; 
         $prefix = $this->getConfig('prefix');
-
         foreach ($this->_routes as $key => $value) {
             $this->slim->map($prefix . $value['route'], function() use($self, $key, $value){
                 $args = func_get_args();
@@ -526,6 +528,7 @@ class Textpress
                 'author.name' => $this->getConfig('author.name'),
                 'site.name' => $this->getConfig('site.name'),
                 'site.title' => $this->getConfig('site.title'),
+                'site.description' => $this->getConfig('site.description'),
                 'disqus.username' => $this->getConfig('disqus.username'),
                 'base.directory' => $this->getConfig('base.directory'),
                 'assets.prefix' => $this->getConfig('assets.prefix'),

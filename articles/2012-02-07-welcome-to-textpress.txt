@@ -34,8 +34,18 @@ TextPress can be installed by [downloading](https://github.com/shameerc/TextPres
 
 Or, clone TextPress using Git.
 ~~~
-shameer@ubuntu:~$ git clone git@github.com:shameerc/TextPress.git
+shameer@ubuntu:~$ git clone git@github.com:shameerc/TextPress.git your-project
 ~~~
+
+After downloading TextPress, you will have to install vendor packages using composer from the project folder.
+
+~~~
+shameer@ubuntu:~$ cd your-project
+shameer@ubuntu:~$ curl -s https://getcomposer.org/installer | php //If you don't have composer
+shameer@ubuntu:~$ ./composer.phar install
+~~~
+
+It will install Slim framework and other required libraries.
 
 ##Filesystem
 ~~~

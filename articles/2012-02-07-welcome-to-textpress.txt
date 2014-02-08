@@ -174,7 +174,7 @@ To enable caching you need to set the `cache` configuration in config.php file.
 	'path' => './cache' // Cache directory
 ),
 ~~~
-Cache can be enabled by setting `enabled` to `true`. Cache expiry can be specified with `expiry`, in hours (default is 24 hours). Make sure the cache directory has write permission. 
+Cache can be enabled by setting `enabled` to `true`. Cache expiry can be specified with `expiry`, in hours (default is 24 hours). Make sure that you've created the cache directory and given write permission. 
 
 One caveat is that you will have to clear the cache when you update the post/ write new one. Right now this feature is available only in *develop-2* branch.
 

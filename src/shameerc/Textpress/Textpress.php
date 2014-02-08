@@ -232,11 +232,11 @@ class Textpress
         }
         $this->allArticles = $allArticles;
         $this->slim->view()->appendGlobalData(
-                array(
-                    "categories" => $this->categories,
-                    "tags" => $this->tags
-                    )
-            );
+            array(
+                "categories" => $this->categories,
+                "tags" => $this->tags
+            )
+        );
         return $this->viewData['articles'] = $this->sortArticles($allArticles);
     }
 

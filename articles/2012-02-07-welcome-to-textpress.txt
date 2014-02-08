@@ -11,12 +11,14 @@ TextPress is a simple, light weight blogging engine for PHP geeks, which can be 
 
 ##Features
 
-* Simple, easy to use 
+* Simple, easy to use.
 * Publish article using git => Content versioning Yaay!
-* Highly secure (as secure as your hosting platform)
-* Blazing fast
+* Highly secure (as secure as your hosting platform).
+* Blazing fast.
 * Write articles in text file, with metadata in json format.
 * Easy integration with disqus commenting system.
+* Feeds, Sitemap, etc.
+* Caching.
 
 ##Requirements
 
@@ -26,33 +28,61 @@ TextPress is a simple, light weight blogging engine for PHP geeks, which can be 
 * Knowledge or willingness to learn HTML/Markdown
 * Account in any PHP PaaS like PHP Fog, Pagodabox, etc.
 
-##Get started
+##Installation
 
-Clone TextPress from Github 
+TextPress can be installed by [downloading](https://github.com/shameerc/TextPress/archive/master.zip) from Github. 
+
+Or, clone TextPress using Git.
 ~~~
 shameer@ubuntu:~$ git clone git@github.com:shameerc/TextPress.git
 ~~~
 
 ##Filesystem
+~~~
+├── articles
+│   └── 2012-02-07-welcome-to-textpress.txt
+├── cache
+├── config
+│   └── config.php
+├── src
+│   └── shameerc
+│       └── Textpress
+├── tests
+├── themes
+│   └── textpress
+│       └── assets
+│           ├── css
+│           ├── img
+│           └── js
+├── vendor
+├── composer.json
+└── index.php
+~~~
 
-<img src="/assets/images/filesystem.jpg" />
 #Configuration
 
 Config file located in config directory returns an array of site configuration which consists of site settings and routes. Site settings includes
 ~~~
-'date.format' => 'd M, Y',   // Date format to be used in article page (not for routes)   
-'author.name' => 'Author name', // Global author name 
 'site.name'  => 'TextPress',   // Site name (Global)
 'site.title' => 'PHP Flat-file blog engine',  // Site default title (Global)
+'site.description' => 'TextPress is an open source flat-file blog engine for PHP',  // Site default description (Global)
+'author.name' => 'Author name', // Global author name 
 'article.path'=> './articles',      // Path to articles
-'templates.path' => './templates',  // Path to templates
+'date.format' => 'd M, Y',   // Date format to be used in article page (not for routes)   
+'themes.path' => './themes',  // Path to templates
+'active.theme'  => 'textpress',  // Current active template
 'layout.file' => 'layout',    // Site layout file
 'file.extension' => '.txt',   // file extension of articles
-'disqus.username' => 'textpress',   // Your disqus username or false (Global)
+'disqus.username' => '',   // Your disqus username or false (Global)
 'markdown'		=> true, //Enable of disable markdown parsing. 
-'path.directory'  => '',
-'prefix' => '',   // prefix to be added with all URLs. eg : '/blog'
+'assets.prefix' => '', // prefix to be added with assets files
+'prefix' => '',   // prefix to be added with all URLs (not to assets). eg : '/blog'
 'google.analytics' => false, // Google analytics code. set false to disable
+'cache' => array(
+	'enabled' => true, // Enable/Disable cache
+	'expiry' => 24, // Cache expiry, in hours. -1 for no expiry
+	'path' => './cache'
+),
 ~~~
 
 ###Routes
@@ -60,44 +90,55 @@ TextPress defines all routes as an array. Each route should have a url pattern a
 ~~~
 // Site root
 '__root__'=> array(
-		'route' => '/',
-		'template'=>'index',
-		'layout' => true
-	),
+	'route' => '/',
+	'template'=>'index',
+	'layout' => 'layout_home'
+),
 'article' => array(
-		'route' => '/:year/:month/:date/:article',
-		'template'=>'article',
-		'conditions' => array(
-							 'year' => '(19|20)\d\d'
-							,'month'=>'([1-9]|[01][0-9])'
-							,'date'=>'([1-9]|[0-3][0-9])'
-							)
-	),
-'archives' => array(
-		'route' => '/archives(/:year(/:month(/:date)))',
-		'template' => 'archives',
-		'conditions' => array(
-							'year' => '(19|20)\d\d',
-							'month'=>'([1-9]|[01][0-2])'
-							)
-	),
-'about' => array(
-		'route' => '/about',
-		'template' => 'about',
-		'layout' => false
-	),
-'rss' => array(
-		'route' => '/feed/rss(.xml)',
-		'template' => 'rss',
-		'layout' => false,
-	),
-'atom' => array(	
-		'route' => '/feed(/atom(.xml))',
-		'template' => 'atom',
-		'layout' => false,
+	'route' => '/:year/:month/:date/:article',
+	'template'=>'article',
+	'conditions' => array(
+		 'year' => '(19|20)\d\d'
+		,'month'=>'([1-9]|[01][0-9])'
+		,'date'=>'([1-9]|[0-3][0-9])'
 	)
+),
+'category' => array(
+	'route' => '/category/:category',
+	'template' => 'index'
+),
+'tag' => array(
+	'route' => '/tag/:tag',
+	'template' => 'index'
+),
+'archives' => array(
+	'route' => '/archives(/:year(/:month(/:date)))',
+	'template' => 'archives',
+	'conditions' => array(
+		'year' => '(19|20)\d\d',
+		'month'=>'([1-9]|[01][0-2])'
+	)
+),
+'about' => array(
+	'route' => '/about',
+	'template' => 'about'
+),
+'rss' => array(
+	'route' => '/feed/rss(.xml)',
+	'template' => 'rss',
+	'layout' => false,
+),
+'atom' => array(	
+	'route' => '/feed(/atom(.xml))',
+	'template' => 'atom',
+	'layout' => false,
+),
+'sitemap' => array(	
+	'route' => '/sitemap.xml',
+	'template' => 'sitemap',
+	'layout' => false,
+)
 ~~~
-Right now the routes to article and archives are fixed. I will be adding the ability to have custom route in coming version.
 
 ###Writing posts
 All posts need to be stored in <code>article.path</code>. _articles_ is the default location for posts. To write a new post, create a text file with name in the format <code>yyyy-mm-dd-article-slug.txt</code>. URL to this article will be <code>/yyyy/mm/dd/article-slug/</code>. An article will have a meta part and a content part which must be separated with a blank line. Article must start with the meta informations stored in json format. "title" and "date" are the mandatory meta information. Inside meta, You can specify "article-slug" which is not necessary. If slug is not present, TextPress will take the title to create slug. For example, metadata of this artilce will look like this.
@@ -111,6 +152,21 @@ All posts need to be stored in <code>article.path</code>. _articles_ is the defa
 }
 ~~~
 You can write articles in markdown, html or mix of both formats. Artilces will be passed to Markdown parser for generating corresponding html. If you are not using markdown, it can be disabled globally by setting <code>markdown => false</code> in config file.
+
+##Caching
+For each request, TextPress has to generates HTML files from the article files and send it to the browser. To improve the performance, TextPress caches the HTML files generated for each request. All the subsequent requests will be served from the cache. 
+
+To enable caching you need to set the `cache` configuration in config.php file.
+~~~
+'cache' => array(
+	'enabled' => true, // Enable/Disable cache
+	'expiry' => 24, // Cache expiry, in hours. -1 for no expiry
+	'path' => './cache' // Cache directory
+),
+~~~
+Cache can be enabled by setting `enabled` to `true`. Cache expiry can be specified with `expiry`, in hours (default is 24 hours). Make sure the cache directory has write permission. 
+
+One caveat is that you will have to clear the cache when you update the post/ write new one. Right now this feature is available only in *develop-2* branch.
 
 ##Customization
 Right now it may not be befitting to your requirements. So don't be afraid to fork and customize TextPress. Just take the code, do what ever you want :)

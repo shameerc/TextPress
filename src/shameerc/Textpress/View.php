@@ -74,7 +74,7 @@ class View extends \Slim\View
 	* Render template
 	* @var string $template Template to be rendered
 	*/
-	public function render($template = '')
+	public function render($template = '', $data = null)
 	{ 
 		$template = is_string($template) ? $template . '.php' : null;
 		if($template){

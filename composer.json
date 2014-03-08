@@ -1,8 +1,10 @@
 {
     "name": "shameerc/textpress",
     "type": "application",
-    "keywords": ["blog"],
+    "keywords": ["blog","flatfile","markdown"],
     "license": "MIT",
+    "description": "A flat-file blog engine for PHP",
+     "homepage": "http://textpress.shameerc.com",
     "authors": [{
             "name": "Shameer C",
             "homepage": "http://blog.shameerc.com"

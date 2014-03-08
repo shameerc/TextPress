@@ -1,0 +1,23 @@
+{
+"title" : "TextPress 2.0, What's new?",
+"author":"Shameer",
+"date":"08-03-2014",
+"tag":"TextPress",
+"category":"TextPress",
+"slug": "textpress-version-2"
+}
+
+Today I've released the version 2 of TextPress, with some significant changes in the application. In previous version all the dependencies were included in TextPress, but now onwards it will be using [composer](https://getcomposer.org) for managing dependencies and autoloading libraries.
+
+Another major change is the introduction of caching, which will make it much faster. TextPress will cache each pages on the first request and write the generated html in to `cache` folder (Make sure this directory is writable). All the subsequent requests will be directly served from the cache. Caching is enabled by default in the configuration.
+~~~
+'cache' => array(
+	'enabled' 	=> true, // Enable/Disable cache
+	'expiry' 	=> 24, // Cache expiry, in hours. -1 for no expiry
+	'path' 		=> './cache'
+),
+~~~
+
+You can disable the cache by setting `'enabled'=false`, or set another location by changing the `path`. 
+
+This version also comes with a default sitemap and better SEO support. You can see the sitemap in `/sitemap.xml` url, which is using `sitemap.php` template file.

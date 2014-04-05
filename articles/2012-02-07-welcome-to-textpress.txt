@@ -160,7 +160,7 @@ All posts need to be stored in <code>article.path</code>. _articles_ is the defa
  "tag" : "intro"
 }
 ~~~
-You can write articles in markdown, html or mix of both formats. Artilces will be passed to Markdown parser for generating corresponding html. If you are not using markdown, it can be disabled globally by setting <code>markdown => false</code> in config file.
+You can write articles in markdown, html or mix of both formats. Articles will be passed to Markdown parser for generating corresponding html. If you are not using markdown, it can be disabled globally by setting <code>markdown => false</code> in config file.
 
 ##Caching
 For each request, TextPress has to generates HTML files from the article files and send it to the browser. To improve the performance, TextPress caches the HTML files generated for each request. All the subsequent requests will be served from the cache. 

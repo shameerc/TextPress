@@ -1,9 +1,8 @@
-
   <h3>About</h3>
   <p>Hi There,</p>
   <p>I am Shameer, a developer from God's own country (Kerala), India. I am mainly working on web development using PHP, Scala, Javascript, etc. 
     Apart from that I do enjoy coding in Ruby (infact, I love it), system administration, database administration, etc. 
-    Occasionally I write about PHP stuffs in <a href="http://phpmaster.com">Phpmaster.com</a> and about Cloud in <a href="https://www.simple-talk.com/author/shameer/">Simple-Talk</a>.</p>
+    Occasionally I write about PHP stuffs in <a href="http://www.sitepoint.com/author/shameerc/">SitePoint</a> and about Cloud in <a href="https://www.simple-talk.com/author/shameer/">Simple-Talk</a>.</p>
   <h3>Philosophy</h3>
   <p>Though there are many flat-file blog engines, like Toto, Jekyll, etc. I was unable to find a decent one for PHP lovers. 
     As there are some good PHP Cloud platform services like AppFog and Pagodabox which offers free hosting in cloud, 

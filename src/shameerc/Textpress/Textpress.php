@@ -174,6 +174,19 @@ class Textpress
         return $this->fileNames;
     }
 
+   /**
+    * Warpper function to get host URL.
+    * From site.baseurl or auto detected by Slim.
+    *
+    * @return Host URL string
+    */
+    public function getUrl($configVar)
+    {
+        return $this->getConfig('site.baseurl')
+                ? $this->getConfig('site.baseurl')
+                : $this->slim->request()->getUrl();
+    }
+
     /**
     * Loads an article
     *
@@ -203,7 +216,7 @@ class Textpress
         $url = $this->getArticleUrl($meta['date'], $slug);
         $meta['category'] = $this->collectCategories($meta);
         $meta['tag'] = $this->collectTags($meta);
-        $meta['url'] = $this->slim->request()->getUrl() . $url;
+        $meta['url'] = $this->getUrl() . $url;
         $meta['path'] = $url;
         return new Article($meta, $contents);
     }
@@ -355,7 +368,7 @@ class Textpress
                     'priority' => '0.9'
                 );
         }
-        $this->viewData['baseUrl'] = $this->slim->request()->getUrl();
+        $this->viewData['baseUrl'] = $this->getUrl();
         return $this->viewData['sitemapData'] = $sitemapData;
     }
 

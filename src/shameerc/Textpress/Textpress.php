@@ -180,7 +180,7 @@ class Textpress
     *
     * @return Host URL string
     */
-    public function getUrl($configVar)
+    public function getUrl()
     {
         return $this->getConfig('site.baseurl')
                 ? $this->getConfig('site.baseurl')

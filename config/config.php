@@ -1,5 +1,6 @@
 <?php
 return array(
+	'site.baseurl'  	=> 'http://textpress.shameerc.com',   // Site URL (Global)
 	'site.name'  		=> 'TextPress',   // Site name (Global)
 	'site.title' 		=> 'PHP Flat-file blog engine',  // Site default title (Global)
 	'site.description' 	=> 'TextPress is an open source flat-file blog engine for PHP',  // Site default description (Global)

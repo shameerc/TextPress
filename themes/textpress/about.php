@@ -8,7 +8,7 @@
     As there are some good PHP Cloud platform services like AppFog and Pagodabox which offers free hosting in cloud, 
     having a flat-file blog engine written in PHP makes perfect sense. An important reason is it's performance. 
     Flat file blog engine will load much faster compared to database driven CMS websites. 
-    Also it is highly secure and agile. So I decided not to wait for someone else to do it and here's mine - TexPress. My goal is to provide almost
+    Also it is highly secure and agile. So I decided not to wait for someone else to do it and here's mine - TextPress. My goal is to provide almost
     all the necessary features for a blogging engine with TextPress.
   </p>
   <strong>Disclaimer</strong> <br>

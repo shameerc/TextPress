@@ -25,6 +25,7 @@ class TextpressTest extends \PHPUnit_Framework_TestCase
     public static function config()
     {
         return array(
+            'site.baseurl' => 'http://textpress.shameerc.com',
             'markdown' => true,
             'date.format' => 'd M, Y',
             'article.path' => __DIR__ . '/articles',
@@ -180,6 +181,23 @@ class TextpressTest extends \PHPUnit_Framework_TestCase
         $articles = $textpress->loadArticles();
         $path = $textpress->getPath(array('2012','02','16','article-slug'));
         $this->assertEquals('/2012/02/16/article-slug', $path);
+    }
+
+    public function testGetUrl()
+    {
+        $slim = new \Slim\Slim(array('view' => new \Textpress\View()));
+        $config = self::config();
+        $textpress =  new Textpress($slim, $config);
+        $textpress->init();
+        $url = $textpress->getUrl();
+        $this->assertEquals('http://textpress.shameerc.com', $url);
+
+        $textpress1 =  new Textpress($slim,  
+            array_merge($config, array('site.baseurl' => 'http://localhost/blog'))
+        );
+        $textpress1->init();
+        $url = $textpress1->getUrl();
+        $this->assertEquals('http://localhost/blog', $url);
     }
 
     public function testGetArticleUrl()

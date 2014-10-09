@@ -14,12 +14,22 @@ class ViewTest extends \PHPUnit_Framework_TestCase
 
     public function testRender()
     {
-        $this->expectOutputString('From layout global. From template data.');
         $view = new View();
         $view->setTemplatesDirectory(dirname(__FILE__) . "/templates");
         $view->setLayout("layout.php");
         $view->appendGlobalData(array("test" => "global"));
         $view->appendData(array("test" => "data"));
-        echo $view->render("test");
+        $viewData = $view->render("test");
+        $this->assertEquals('From layout global. From template data.', $viewData);
+    }
+
+    public function testRenderWithoutLayout()
+    {
+        $view = new View();
+        $view->setTemplatesDirectory(dirname(__FILE__) . "/templates");
+        $view->appendGlobalData(array("test" => "global"));
+        $view->appendData(array("test" => "data"));
+        $viewData = $view->render("test");
+        $this->assertEquals('From template data.', $viewData);
     }
 }

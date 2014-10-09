@@ -409,6 +409,7 @@ class Textpress
                         $self->allArticles = array_slice($self->allArticles, 0, 10);
                         break;
                     case 'sitemap'  :
+                        $self->slim->response->headers->set('Content-Type', 'text/xml');
                         $self->setSitemapData();
                         break;
                     case 'article'  :
@@ -535,7 +536,7 @@ class Textpress
     public function setViewConfig()
     {
         $themeDir   = ltrim($this->themeBase, "./");
-        $themeBase = $this->getConfig('base.directory') . "/" . $themeDir;
+        $themeBase  = "/" . $themeDir;
         $data = array(
                 'date.format' => $this->getConfig('date.format'),
                 'author.name' => $this->getConfig('author.name'),
@@ -543,11 +544,10 @@ class Textpress
                 'site.title' => $this->getConfig('site.title'),
                 'site.description' => $this->getConfig('site.description'),
                 'disqus.username' => $this->getConfig('disqus.username'),
-                'base.directory' => $this->getConfig('base.directory'),
                 'assets.prefix' => $this->getConfig('assets.prefix'),
                 'google.analytics' => $this->getConfig('google.analytics'),
                 'prefix' => $this->getConfig('prefix'),
-                'theme.base' => $themeBase
+                'base.url' => $this->getUrl()
             );
         $this->slim->view()->appendGlobalData($data);
     }

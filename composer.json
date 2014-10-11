@@ -3,7 +3,7 @@
     "type": "application",
     "keywords": ["blog","flatfile","markdown"],
     "license": "MIT",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "A flat-file blog engine for PHP",
     "homepage": "http://textpress.shameerc.com",
     "authors": [{

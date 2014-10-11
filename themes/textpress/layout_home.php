@@ -24,26 +24,26 @@
         <div class="masthead text-center">
           <h1 class="muted">TextPress</h1>
           <ul class="nav nav-pills">
-            <li class="<?php if($global["route"] == "/") echo "active";?>"><a href="/">Home</a></li>
+            <li class="<?php if($global["route"] == "/") echo "active";?>"><a href="<?php echo $global['base.url'];?>/">Home</a></li>
             <li class="dropdown <?php if($global["route"] == "category") echo "active";?>">
               <a class="dropdown-toggle" id="drop5" role="button" data-toggle="dropdown" href="#">Categories <b class="caret"></b></b></a>
               <ul id="menu3" class="dropdown-menu" role="menu" aria-labelledby="drop5">
                 <?php
                   foreach ($global['categories'] as $slug => $category) {
-                    echo '<li><a tabindex="-1" href="/category/'.$slug.'">'. $category .'</a></li>';
+                    echo '<li><a tabindex="-1" href="' . $global["base.url"] . '/category/'.$slug.'">'. $category .'</a></li>';
                   }
                 ?>
               </ul>
             </li>
-            <li class="<?php if($global["route"] == "archives") echo "active";?>"><a href="/archives">Archives</a></li>
+            <li class="<?php if($global["route"] == "archives") echo "active";?>"><a href="<?php echo $global['base.url'];?>/archives">Archives</a></li>
             <li><a href="https://github.com/shameerc/TextPress" target="_blank">Source</a>
-            <li class="<?php if($global["route"] == "about") echo "active";?>"><a href="/about">About</a></li>
+            <li class="<?php if($global["route"] == "about") echo "active";?>"><a href="<?php echo $global['base.url'];?>/about">About</a></li>
           </ul>
         </div>
         <div class="jumbotron">
           <h1>The flat-file blog engine for PHP</h1>
           <p class="lead">TextPress is a simple, light-weight, flat-file blog engine in PHP</p>
-          <a class="btn btn-large btn-info" href="/2012/02/07/welcome-to-textpress">Learn More</a> &nbsp;
+          <a class="btn btn-large btn-info" href="<?php echo $global['base.url'];?>/2012/02/07/welcome-to-textpress">Learn More</a> &nbsp;
           <a class="btn btn-large btn-info" href="https://github.com/shameerc/TextPress/tarball/master">Download</a>
         </div>
       </div>

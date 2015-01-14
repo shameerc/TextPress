@@ -7,7 +7,7 @@
  "category":"TextPress"
 }
 
-TextPress is a simple, light weight blogging engine for PHP geeks, which can be hosted in PHP clouds like PHP Fog, Pagodabox, Orchestra.io, etc (though you can use traditional hosting to host TextPress, it is less preferred). It is inspired from [toto](http://cloudhead.io/toto), a flat-file blog engine in Ruby. TextPress is built on top of [Slim](http://www.slimframework.com/), a light weight php framework. It uses Git, the most popular version control system, for publishing articles. Articles can be written in markdown or html syntax. 
+TextPress is a simple, light weight blogging engine for PHP geeks, which can be hosted in PHP clouds like PHP Fog, Pagodabox, Orchestra.io, etc (though you can use traditional hosting to host TextPress, it is less preferred). It is inspired from [toto](http://cloudhead.io/toto), a flat-file blog engine in Ruby. TextPress is built on top of [Slim](http://www.slimframework.com/), a light weight php framework. It uses Git, the most popular version control system, for publishing articles. Articles can be written in markdown or html syntax.
 
 ##Features
 
@@ -30,7 +30,7 @@ TextPress is a simple, light weight blogging engine for PHP geeks, which can be 
 
 ##Installation
 
-TextPress can be installed by [downloading](https://github.com/shameerc/TextPress/archive/master.zip) from Github. 
+TextPress can be installed by [downloading](https://github.com/shameerc/TextPress/archive/master.zip) from Github.
 
 Or, clone TextPress using Git.
 ~~~
@@ -46,6 +46,15 @@ shameer@ubuntu:~$ ./composer.phar install
 ~~~
 
 It will install Slim framework and other required libraries.
+
+## Running the application
+
+To see a real-live page in action, start the PHP built-in web server with
+command:
+
+    $ composer run
+
+Then, browse to http://localhost:8888/.
 
 ##Filesystem
 ~~~
@@ -76,15 +85,15 @@ Config file located in config directory returns an array of site configuration w
 'site.name'  		=> 'TextPress',   // Site name (Global)
 'site.title' 		=> 'PHP Flat-file blog engine',  // Site default title (Global)
 'site.description' 	=> 'TextPress is an open source flat-file blog engine for PHP',  // Site default description (Global)
-'author.name'	 	=> 'Author name', // Global author name 
+'author.name'	 	=> 'Author name', // Global author name
 'article.path'		=> './articles',      // Path to articles
-'date.format' 		=> 'd M, Y',   // Date format to be used in article page (not for routes)   
+'date.format' 		=> 'd M, Y',   // Date format to be used in article page (not for routes)
 'themes.path' 		=> './themes',  // Path to templates
 'active.theme'  	=> 'textpress',  // Current active template
 'layout.file' 		=> 'layout',    // Site layout file
 'file.extension' 	=> '.txt',   // file extension of articles
 'disqus.username' 	=> '',   // Your disqus username or false (Global)
-'markdown'			=> true, //Enable of disable markdown parsing. 
+'markdown'			=> true, //Enable of disable markdown parsing.
 'assets.prefix' 	=> '', // prefix to be added with assets files
 'prefix' 			=> '',   // prefix to be added with all URLs (not to assets). eg : '/blog'
 'google.analytics' 	=> false, // Google analytics code. set false to disable
@@ -96,7 +105,7 @@ Config file located in config directory returns an array of site configuration w
 ~~~
 
 ###Routes
-TextPress defines all routes as an array. Each route should have a url pattern and a template file. You can write route conditions optionally. For a particular route, layout can be setting <code>layout => false</code>. TextPress comes with the following default routes. 
+TextPress defines all routes as an array. Each route should have a url pattern and a template file. You can write route conditions optionally. For a particular route, layout can be setting <code>layout => false</code>. TextPress comes with the following default routes.
 ~~~
 '__root__'	=> array(
 	'route' 	=> '/',
@@ -137,12 +146,12 @@ TextPress defines all routes as an array. Each route should have a url pattern a
 	'template' 	=> 'rss',
 	'layout' 	=> false,
 ),
-'atom' 	=> array(	
+'atom' 	=> array(
 	'route' 	=> '/feed(/atom(.xml))',
 	'template' 	=> 'atom',
 	'layout' 	=> false,
 ),
-'sitemap' => array(	
+'sitemap' => array(
 	'route' 	=> '/sitemap.xml',
 	'template' 	=> 'sitemap',
 	'layout' 	=> false,
@@ -163,7 +172,7 @@ All posts need to be stored in <code>article.path</code>. _articles_ is the defa
 You can write articles in markdown, html or mix of both formats. Articles will be passed to Markdown parser for generating corresponding html. If you are not using markdown, it can be disabled globally by setting <code>markdown => false</code> in config file.
 
 ##Caching
-For each request, TextPress has to generates HTML files from the article files and send it to the browser. To improve the performance, TextPress caches the HTML files generated for each request. All the subsequent requests will be served from the cache. 
+For each request, TextPress has to generates HTML files from the article files and send it to the browser. To improve the performance, TextPress caches the HTML files generated for each request. All the subsequent requests will be served from the cache.
 
 To enable caching you need to set the `cache` configuration in config.php file.
 ~~~
@@ -173,7 +182,7 @@ To enable caching you need to set the `cache` configuration in config.php file.
 	'path' => './cache' // Cache directory
 ),
 ~~~
-Cache can be enabled by setting `enabled` to `true`. Cache expiry can be specified with `expiry`, in hours (default is 24 hours). Make sure that you've created the cache directory and given write permission. 
+Cache can be enabled by setting `enabled` to `true`. Cache expiry can be specified with `expiry`, in hours (default is 24 hours). Make sure that you've created the cache directory and given write permission.
 
 One caveat is that you will have to clear the cache when you update the post/ write new one.
 

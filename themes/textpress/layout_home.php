@@ -5,7 +5,7 @@
     <title>
       <?php 
         $title= (isset($global['title'])) ? $global['title'] : $global['site.title'];
-        echo $title .' | '. $global['site.name'];
+        echo $title ,' | ', $global['site.name'];
       ?>
     </title>
     <meta name="author" content="<?php echo $global['author.name']; ?>"> 
@@ -30,7 +30,7 @@
               <ul id="menu3" class="dropdown-menu" role="menu" aria-labelledby="drop5">
                 <?php
                   foreach ($global['categories'] as $slug => $category) {
-                    echo '<li><a tabindex="-1" href="' . $global["base.url"] . '/category/'.$slug.'">'. $category .'</a></li>';
+                    echo '<li><a tabindex="-1" href="' , $global["base.url"] , '/category/',$slug,'">', $category ,'</a></li>';
                   }
                 ?>
               </ul>

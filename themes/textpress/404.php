@@ -5,7 +5,7 @@
     <title>
       <?php 
         $title= (isset($global['title'])) ? $global['title'] : $global['site.title'];
-        echo $global['site.name'] .' | '. $title;
+        echo $global['site.name'] ,' | ', $title;
       ?>
     </title>
     <meta name="description" content="">
@@ -54,7 +54,7 @@
                 <?php
                 if(isset($global['categories'])){
                   foreach ($global['categories'] as $slug => $category) {
-                    echo '<li><a tabindex="-1" href="/category/'.$slug.'">'. $category .'</a></li>';
+                    echo '<li><a tabindex="-1" href="/category/',$slug,'">', $category ,'</a></li>';
                   }
                 }
                 ?>

@@ -16,7 +16,7 @@
       Tags : 
       <?php
         foreach ($article->getTags() as $slug => $tag) {
-          echo '<span class="tag"><a href="/tag/' . $slug .'">' . $tag->name . "</a></span>";
+          echo '<span class="tag"><a href="/tag/' , $slug ,'">' , $tag->name , "</a></span>";
         }
         ?>
     </div>

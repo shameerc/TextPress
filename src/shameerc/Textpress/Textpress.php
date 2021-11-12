@@ -264,7 +264,9 @@ class Textpress
         foreach($articles as $article) {
             $date = new \DateTime($article->getDate());
             $timestamp = $date->getTimestamp();
-            $timestamp = array_key_exists($timestamp, $results) ? $timestamp + 1 : $timestamp;
+            while (array_key_exists($timestamp, $results)) {
+                $timestamp += 1;
+            }
             $results[$timestamp] = $article;
         }
         krsort($results);
